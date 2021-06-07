@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         UrlConfig.HOME_URL,
                         UrlConfig.SIGN_UP_URL,
                         UrlConfig.LOGIN_URL
+
                 )
                 .permitAll()
                 .mvcMatchers(HttpMethod.GET,"/profile/*").permitAll()
