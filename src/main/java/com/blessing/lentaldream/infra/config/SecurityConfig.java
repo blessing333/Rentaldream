@@ -27,16 +27,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .mvcMatchers(
                         UrlConfig.HOME_URL,
-                        UrlConfig.LOGIN_URL,
-                        UrlConfig.SIGN_UP_URL
+                        UrlConfig.SIGN_UP_URL,
+                        UrlConfig.LOGIN_URL
                 )
                 .permitAll()
                 .mvcMatchers(HttpMethod.GET,"/profile/*").permitAll()
                 .anyRequest().authenticated();
 
-//        http.formLogin().loginPage("/login").permitAll();
-//        http.logout().logoutSuccessUrl("/");
-//        http.rememberMe().userDetailsService(userDetailsService).tokenRepository(tokenRepository());
+        http.formLogin().loginPage("/login").permitAll();
+        http.logout().logoutSuccessUrl("/");
+        http.rememberMe().userDetailsService(userDetailsService).tokenRepository(tokenRepository());
     }
 
     @Bean
