@@ -20,10 +20,10 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+
 public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-
     public Account processSignUp(SignUpForm signUpForm){
         String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
         Account newAccount = Account.createNewAccount(signUpForm.getNickname(), signUpForm.getEmail(),encodedPassword);
