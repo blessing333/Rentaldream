@@ -49,8 +49,9 @@ public class AccountController {
         return REDIRECT_URL+HOME_URL;
     }
 
-//    @GetMapping(LOGIN_URL)
-//    public String createLoginView(){
-//        return LOGIN_VIEW;
-//    }
+    @GetMapping(LOGIN_URL)
+    public String createLoginView(){
+        return LOGIN_VIEW;
+    }
+
 }
