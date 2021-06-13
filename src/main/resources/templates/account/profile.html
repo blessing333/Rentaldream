@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+
+<body>
+<div th:replace="fragments.html::preloader"></div>
+<!-- END LOADER -->
+
+<!-- START HEADER -->
+<header th:replace="fragments.html::header"></header>
+<!-- END HEADER -->
+
+<!-- START SECTION BREADCRUMB -->
+<div th:replace="fragments.html::breadcrumb(프로필)"></div>
+<!-- END SECTION BREADCRUMB -->
+
+<!-- START MAIN CONTENT -->
+<div class="main_content">
+
+<!-- START SECTION SHOP -->
+<div class="section">
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4">
+                <div th:replace="fragments.html::account-setting-nav(profile)"></div>
+            </div>
+            <div class="col-lg-9 col-md-8">
+                <div class="tab-content dashboard_content">
+                  	<div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                    	<div class="card">
+                        	<div class="card-header">
+                                <h3 th:text="${#authentication.name}">hello</h3>
+                            </div>
+                            <div class="card-body">
+                    			<p>From your account dashboard. you can easily check &amp; view your <a href="javascript:void(0);" onclick="$('#orders-tab').trigger('click')">recent orders</a>, manage your <a href="javascript:void(0);" onclick="$('#address-tab').trigger('click')">shipping and billing addresses</a> and <a href="javascript:void(0);" onclick="$('#account-detail-tab').trigger('click')">edit your password and account details.</a></p>
+                            </div>
+                        </div>
+                  	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END SECTION SHOP -->
+
+</div>
+<!-- END MAIN CONTENT -->
+
+<!-- START FOOTER -->
+<footer th:replace="fragments.html::footer"></footer>
+<!--END FOOTER-->
+
+<!--<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>-->
+<div th:replace="fragments.html::common-js"></div>
+
+</body>
+</html>

@@ -1,20 +1,24 @@
 package com.blessing.lentaldream.modules.account.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Account {
     @Id
     @GeneratedValue
+    @Column(name = "ACCOUNT_ID")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -23,9 +27,9 @@ public class Account {
     @Column(unique = true)
     private String nickname;
 
-//    @OneToMany(mappedBy ="account",fetch = FetchType.LAZY)
-//    private Set<AccountTag> AccountTags = new HashSet<>();
-//
+    @OneToMany(mappedBy ="account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AccountTag> AccountTags = new HashSet<>();
+
 //    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 //    private Set<AccountZone> AccountZones= new HashSet<>();
 
@@ -72,7 +76,6 @@ public class Account {
         return instance;
     }
 
-
     public void generateEmailCheckToken() {
         this.emailCheckToken= UUID.randomUUID().toString();
         this.tokenGeneratedAt = LocalDateTime.now();
@@ -82,5 +85,13 @@ public class Account {
     }
     public boolean canResendEmail(){
         return tokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
+    }
+
+    public void addNewAccountTag(AccountTag accountTag) {
+        this.getAccountTags().add(accountTag);
+    }
+
+    public void deleteAccountTag(AccountTag accountTag){
+        this.getAccountTags().remove(accountTag);
     }
 }

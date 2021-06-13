@@ -1,6 +1,7 @@
 package com.blessing.lentaldream.modules.account.controller;
 
 import com.blessing.lentaldream.infra.config.UrlConfig;
+import com.blessing.lentaldream.modules.account.AccountFactory;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccountControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired AccountRepository accountRepository;
+    @Autowired AccountFactory accountFactory;
+
     private final String TEST_NICKNAME = "testname";
     private final String TEST_ID = "testEmail@email.com";
     private final String TEST_PASSWORD = "testPassword";

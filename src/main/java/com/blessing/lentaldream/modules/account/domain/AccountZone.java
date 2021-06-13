@@ -12,7 +12,4 @@ public class AccountZone {
     @ManyToOne
     private Account account;
 
-    @ManyToOne
-    private Zone zone;
-
 }

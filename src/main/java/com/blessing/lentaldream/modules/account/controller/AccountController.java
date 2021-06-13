@@ -1,4 +1,5 @@
 package com.blessing.lentaldream.modules.account.controller;
+
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.form.SignUpForm;
 import com.blessing.lentaldream.modules.account.service.AccountService;
@@ -16,14 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 import static com.blessing.lentaldream.infra.config.UrlConfig.*;
+import static com.blessing.lentaldream.infra.config.ViewNameConfig.LOGIN_VIEW;
+import static com.blessing.lentaldream.infra.config.ViewNameConfig.SIGN_UP_VIEW;
 
 @Controller
 @RequiredArgsConstructor
 public class AccountController {
-
-    private static final String SIGN_UP_VIEW = "account/sign-up";
-    private static final String LOGIN_VIEW = "account/login";
-
     private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
 
@@ -53,5 +52,7 @@ public class AccountController {
     public String createLoginView(){
         return LOGIN_VIEW;
     }
+
+
 
 }
