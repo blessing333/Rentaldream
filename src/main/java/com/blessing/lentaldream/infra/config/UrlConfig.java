@@ -6,6 +6,7 @@ public class UrlConfig {
     public final static String HOME_URL = "/";
     public final static String SIGN_UP_URL = "/sign-up";
     public final static String LOGIN_URL = "/login";
+
     public final static String ACCOUNT_SETTING_PROFILE_URL = "/account/settings/profile";
     public final static String ACCOUNT_SETTING_TAG_URL = "/account/settings/tag";
     public final static String ACCOUNT_SETTING_ZONE_URL = "/account/settings/zone";

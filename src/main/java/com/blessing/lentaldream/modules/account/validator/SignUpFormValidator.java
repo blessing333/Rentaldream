@@ -25,15 +25,15 @@ public class SignUpFormValidator implements Validator {
 
     }
 
-    private void checkConfirmPassword(Errors errors, String password, String confirmPassword) {
-        if(!password.equals(confirmPassword)){
-            errors.rejectValue("password", "invalid.password","패스워드가 일치하지 않습니다.");
+    public void checkNicknameDuplication(Errors errors, String nickname) {
+        if (accountRepository.existsByNickname(nickname)){
+            errors.rejectValue("nickname", "invalid.nickname","이미 사용중인 닉네임입니다.");
         }
     }
 
-    private void checkNicknameDuplication(Errors errors, String nickname) {
-        if (accountRepository.existsByNickname(nickname)){
-            errors.rejectValue("nickname", "invalid.nickname","이미 사용중인 닉네임입니다.");
+    private void checkConfirmPassword(Errors errors, String password, String confirmPassword) {
+        if(!password.equals(confirmPassword)){
+            errors.rejectValue("password", "invalid.password","패스워드가 일치하지 않습니다.");
         }
     }
 

@@ -3,11 +3,18 @@ package com.blessing.lentaldream.modules.account.service;
 import com.blessing.lentaldream.modules.account.UserAccount;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.domain.AccountTag;
+import com.blessing.lentaldream.modules.account.domain.AccountZone;
+import com.blessing.lentaldream.modules.account.form.ProfileForm;
 import com.blessing.lentaldream.modules.account.form.SignUpForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import com.blessing.lentaldream.modules.account.repository.AccountTagRepository;
+import com.blessing.lentaldream.modules.account.repository.AccountZoneRepository;
 import com.blessing.lentaldream.modules.tag.Tag;
+import com.blessing.lentaldream.modules.zone.Zone;
+import com.blessing.lentaldream.modules.zone.ZoneForm;
+import com.blessing.lentaldream.modules.zone.ZoneService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +36,10 @@ import java.util.Optional;
 public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ZoneService zoneService;
     private final AccountTagRepository accountTagRepository;
+    private final AccountZoneRepository accountZoneRepository;
+    private final ModelMapper modelMapper;
 
     public Account processSignUp(SignUpForm signUpForm){
         String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
@@ -80,5 +90,40 @@ public class AccountService implements UserDetailsService {
             });
         });
         return list;
+    }
+
+    public List<String> getZoneList(Long accountId) {
+        Optional<Account> findAccount = accountRepository.findById(accountId);
+        List<String> list = new ArrayList<>();
+        findAccount.ifPresent(account ->{
+            account.getAccountZones().forEach(accountZone -> {
+                list.add(accountZone.getZone().toString());
+            });
+        });
+        return list;
+    }
+
+    public void addZone(Long accountId,ZoneForm zoneForm) {
+        Optional<Account> foundAccount = accountRepository.findById(accountId);
+        Zone zone = zoneService.findByCityAndProvince(zoneForm.getCity(),zoneForm.getProvince());
+        foundAccount.ifPresent(account -> {
+            AccountZone newAccountZone = AccountZone.createNewAccountZone(account, zone);
+            account.addNewAccountZone(newAccountZone);
+        });
+    }
+
+    public void removeZone(Long id, Zone zone) {
+        Optional<Account> foundAccount = accountRepository.findById(id);
+        foundAccount.ifPresent(account -> {
+            AccountZone accountZone = accountZoneRepository.findByAccountAndZone(account,zone);
+            account.deleteAccountZone(accountZone);
+        });
+    }
+
+    public void updateProfile(Long accountId, ProfileForm profileForm) {
+        Optional<Account> foundAccount = accountRepository.findById(accountId);
+        foundAccount.ifPresent(account -> {
+            account.updateProfile(profileForm);
+        });
     }
 }

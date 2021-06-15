@@ -1,9 +1,7 @@
 package com.blessing.lentaldream.modules.account.domain;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import com.blessing.lentaldream.modules.account.form.ProfileForm;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,8 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Builder
 @Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
     @Id
     @GeneratedValue
@@ -24,14 +25,14 @@ public class Account {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String nickname;
 
     @OneToMany(mappedBy ="account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AccountTag> AccountTags = new HashSet<>();
 
-//    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-//    private Set<AccountZone> AccountZones= new HashSet<>();
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AccountZone> AccountZones= new HashSet<>();
 
     private String password;
 
@@ -83,6 +84,7 @@ public class Account {
     public boolean isValidToken(String token) {
         return this.getEmailCheckToken().equals(token);
     }
+
     public boolean canResendEmail(){
         return tokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
     }
@@ -93,5 +95,20 @@ public class Account {
 
     public void deleteAccountTag(AccountTag accountTag){
         this.getAccountTags().remove(accountTag);
+    }
+
+    public void addNewAccountZone(AccountZone newAccountZone) {
+        this.getAccountZones().add(newAccountZone);
+    }
+
+    public void deleteAccountZone(AccountZone accountZone) {
+        this.getAccountZones().remove(accountZone);
+    }
+
+    public void updateProfile(ProfileForm profileForm) {
+        setNickname(profileForm.getNickname());
+        setBio(profileForm.getBio());
+        setUrl(profileForm.getUrl());
+        setLocation(profileForm.getLocation());
     }
 }

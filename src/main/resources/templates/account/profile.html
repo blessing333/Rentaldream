@@ -29,10 +29,56 @@
                   	<div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     	<div class="card">
                         	<div class="card-header">
-                                <h3 th:text="${#authentication.name}">hello</h3>
+                                <h3>내 프로필</h3>
                             </div>
                             <div class="card-body">
-                    			<p>From your account dashboard. you can easily check &amp; view your <a href="javascript:void(0);" onclick="$('#orders-tab').trigger('click')">recent orders</a>, manage your <a href="javascript:void(0);" onclick="$('#address-tab').trigger('click')">shipping and billing addresses</a> and <a href="javascript:void(0);" onclick="$('#account-detail-tab').trigger('click')">edit your password and account details.</a></p>
+                                <form method="post" th:action="@{/account/settings/profile}" name="enq" th:object="${profileForm}" novalidate>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label for="email">이메일 <span></span></label>
+                                            <input id = "email" class="form-control" type="email" disabled th:value="${account.email}">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="nickname">닉네임 <span></span></label>
+                                            <input id="nickname" class="form-control" type="text" th:field="*{nickname}">
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">
+                                                이미 존재하는 닉네임 입니다.
+                                            </small>
+                                            <input id="current-nickname" readonly class="form-control" type="text" name="currentNickname" th:value="${account.nickname}" hidden>
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <label for="bio">한 줄 소개</label>
+                                            <input id="bio" class="form-control"  type="text" th:field="*{bio}" placeholder="간략한 소개를 적어주세요.">
+                                            <small id="bioHelp" class="form-text text-muted" th:if="!*{bio}">
+                                                길지 않게 35자 이내로 입력하세요.
+                                            </small>
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
+                                                조금 길어요.
+                                            </small>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="url">개인 홈페이지 <span class="required"></span></label>
+                                            <input id="url" class="form-control" th:field="*{url}" type="url" placeholder="http://lentaldream.com">
+                                            <small id="urlHelp" class="form-text text-muted" th:if="!*{bio}">
+                                                블로그, 유튜브 또는 웹 사이트 등 본인을 표현할 수 있는 링크를 추가하세요.
+                                            </small>
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
+                                                옳바른 URL이 아닙니다. 예시처럼 입력해 주세요.
+                                            </small>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="location">활동 지역</label>
+                                            <input id="location"  class="form-control" th:field="*{location}" type="text" placeholder="경기도 성남시 분당구">
+                                            <small id="locationdHelp" class="form-text text-muted" th:if="!*{location}">
+                                                주요 활동(사는 곳이나 직장을 다니는 곳 또는 놀러 다니는 곳) 지역의 도시 이름을 알려주세요.
+                                            </small>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-fill-out" name="submit" value="Submit">등록</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                   	</div>
