@@ -1,10 +1,12 @@
 package com.blessing.lentaldream.modules.account.controller;
 
+import com.blessing.lentaldream.infra.config.ErrorCodeConfig;
 import com.blessing.lentaldream.modules.account.AccountFactory;
 import com.blessing.lentaldream.modules.account.LoginWith;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.domain.AccountTag;
 import com.blessing.lentaldream.modules.account.domain.AccountZone;
+import com.blessing.lentaldream.modules.account.form.PasswordForm;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import com.blessing.lentaldream.modules.account.repository.AccountTagRepository;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +51,12 @@ class SettingControllerTest {
     @Autowired TagRepository tagRepository;
     @Autowired ZoneRepository zoneRepository;
     @Autowired AccountZoneRepository accountZoneRepository;
+    @Autowired PasswordEncoder passwordEncoder;
 
     private static final String TEST_USER = "testUser";
     private static final String PROFILE_FORM_NAME = "profileForm";
+    private static final String TEST_USER_CURRENT_PASSWORD = "12345678";
+    private static final String NEW_PASSWORD = "newPassword";
     private Zone testZone = Zone.builder().city("test").localCityName("테스트시").province("테스트주").build();
 
     @DisplayName("유저 프로필 화면 조회")
@@ -94,6 +100,55 @@ class SettingControllerTest {
         assertEquals(changedAccount.getNickname(),profileForm.getNickname());
         assertEquals(changedAccount.getLocation(),profileForm.getLocation());
 
+    }
+
+    @DisplayName("유저 프로필 갱신 실패 - bio,location,url 필드 validation 위반")
+    @LoginWith(TEST_USER)
+    @Test
+    public void accountProfileUpdateNicknameError() throws Exception {
+        Account account = accountRepository.findByNickname(TEST_USER);
+        Long accountId = account.getId();
+
+        ProfileForm profileForm = new ProfileForm();
+        profileForm.setCurrentNickname(TEST_USER);
+        profileForm.setNickname("changedNickname");
+        profileForm.setUrl("url error");
+        profileForm.setLocation("location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error location Error ");
+        profileForm.setBio("changed Error changed Error changed Error changed Error changed Error changed Error changed Error changed Error");
+
+        mockMvc.perform(post(ACCOUNT_SETTING_PROFILE_URL)
+                .param("bio", profileForm.getBio())
+                .param("currentNickname",profileForm.getCurrentNickname())
+                .param("url",profileForm.getUrl())
+                .param("location",profileForm.getLocation())
+                .with(csrf()))
+                .andExpect(model().attributeHasFieldErrorCode("profileForm","bio","Length"))
+                .andExpect(model().attributeHasFieldErrorCode("profileForm","location","Length"))
+                .andExpect(model().attributeHasFieldErrorCode("profileForm","url","URL"))
+                .andExpect(status().isOk());
+
+        assertNull(account.getBio());
+    }
+
+    @DisplayName("유저 프로필 갱신 실패 - 닉네임 중복")
+    @LoginWith(TEST_USER)
+    @Test
+    public void accountProfileUpdateBioError() throws Exception {
+        Account account = accountRepository.findByNickname(TEST_USER);
+        accountFactory.createAccount("changedNickname");
+
+        ProfileForm profileForm = new ProfileForm();
+        profileForm.setCurrentNickname(TEST_USER);
+        profileForm.setNickname("changedNickname");
+
+        mockMvc.perform(post(ACCOUNT_SETTING_PROFILE_URL)
+                .param("nickname",profileForm.getNickname())
+                .param("currentNickname",profileForm.getCurrentNickname())
+                .with(csrf()))
+                .andExpect(model().attributeHasFieldErrorCode("profileForm","nickname",ErrorCodeConfig.DUPLICATED_NICKNAME_ERROR_CODE))
+                .andExpect(status().isOk());
+
+        assertNotEquals(account.getNickname(),profileForm.getNickname());
     }
 
     @DisplayName("유저 관심 태그 화면 조회")
@@ -200,5 +255,83 @@ class SettingControllerTest {
         Account foundAccount = accountRepository.findByNickname(TEST_USER);
         AccountZone result = accountZoneRepository.findByAccountAndZone(foundAccount, testZone);
         assertNull(result);
+    }
+
+    @DisplayName("계정 비밀번호 변경 화면 뷰")
+    @Test
+    @LoginWith(TEST_USER)
+    public void createAccountPasswordChangeView() throws Exception {
+        mockMvc.perform(get(ACCOUNT_SETTING_PASSWORD_URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name(ACCOUNT_SETTING_PASSWORD_VIEW));
+    }
+
+    @DisplayName("계정 비밀번호 변경 - 정상 입력")
+    @Test
+    @LoginWith(TEST_USER)
+    public void accountPasswordChangeWithCorrectValue() throws Exception {
+        Account account = accountRepository.findByNickname(TEST_USER);
+        PasswordForm passwordForm = new PasswordForm();
+        passwordForm.setAccountId(account.getId());
+        passwordForm.setCurrentPassword(TEST_USER_CURRENT_PASSWORD);
+        passwordForm.setNewPassword(NEW_PASSWORD);
+        passwordForm.setConfirmPassword(NEW_PASSWORD);
+
+        mockMvc.perform(post(ACCOUNT_SETTING_PASSWORD_URL)
+            .param("accountId",passwordForm.getAccountId().toString())
+            .param("currentPassword",passwordForm.getCurrentPassword())
+            .param("newPassword",passwordForm.getNewPassword())
+            .param("confirmPassword",passwordForm.getConfirmPassword())
+            .with(csrf()))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl(ACCOUNT_SETTING_PASSWORD_URL))
+                    .andExpect(model().hasNoErrors());
+
+        assertTrue(passwordEncoder.matches(NEW_PASSWORD,account.getPassword()));
+    }
+
+    @DisplayName("계정 비밀번호 변경 실패 - 현재 비밀번호 오류")
+    @Test
+    @LoginWith(TEST_USER)
+    public void accountPasswordChangeWithInvalidCurrentPassword() throws Exception {
+        Account account = accountRepository.findByNickname(TEST_USER);
+        PasswordForm passwordForm = new PasswordForm();
+        passwordForm.setAccountId(account.getId());
+        passwordForm.setCurrentPassword("INVALID"+TEST_USER_CURRENT_PASSWORD);
+        passwordForm.setNewPassword(NEW_PASSWORD);
+        passwordForm.setConfirmPassword(NEW_PASSWORD);
+
+        mockMvc.perform(post(ACCOUNT_SETTING_PASSWORD_URL)
+                .param("accountId",passwordForm.getAccountId().toString())
+                .param("currentPassword",passwordForm.getCurrentPassword())
+                .param("newPassword",passwordForm.getNewPassword())
+                .param("confirmPassword",passwordForm.getConfirmPassword())
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrorCode("passwordForm","currentPassword", ErrorCodeConfig.INVALID_PASSWORD_ERROR_CODE));
+
+        assertFalse(passwordEncoder.matches(NEW_PASSWORD,account.getPassword()));
+    }
+
+    @DisplayName("계정 비밀번호 변경 실패 - confirm 비밀번호 오류")
+    @Test
+    @LoginWith(TEST_USER)
+    public void accountPasswordChangeWithDifferentConfirmPassword() throws Exception {
+        Account account = accountRepository.findByNickname(TEST_USER);
+        PasswordForm passwordForm = new PasswordForm();
+        passwordForm.setAccountId(account.getId());
+        passwordForm.setCurrentPassword(TEST_USER_CURRENT_PASSWORD);
+        passwordForm.setNewPassword(NEW_PASSWORD);
+        passwordForm.setConfirmPassword("different" + NEW_PASSWORD);
+
+        mockMvc.perform(post(ACCOUNT_SETTING_PASSWORD_URL)
+                .param("accountId",passwordForm.getAccountId().toString())
+                .param("currentPassword",passwordForm.getCurrentPassword())
+                .param("newPassword",passwordForm.getNewPassword())
+                .param("confirmPassword",passwordForm.getConfirmPassword())
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrorCode("passwordForm","confirmPassword", ErrorCodeConfig.CONFIRM_PASSWORD_NOT_MATCHING_ERROR_CODE));
+        assertFalse(passwordEncoder.matches(NEW_PASSWORD,account.getPassword()));
     }
 }

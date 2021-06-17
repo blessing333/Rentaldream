@@ -1,5 +1,6 @@
 package com.blessing.lentaldream.modules.account.validator;
 
+import com.blessing.lentaldream.infra.config.ErrorCodeConfig;
 import com.blessing.lentaldream.modules.account.form.SignUpForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,25 +22,24 @@ public class SignUpFormValidator implements Validator {
         SignUpForm form = (SignUpForm) target;
         checkEmailDuplication(errors, form.getEmail());
         checkNicknameDuplication(errors, form.getNickname());
-        checkConfirmPassword(errors,form.getPassword(),form.getConfirmPassword());
-
+        checkConfirmPasswordNotEqual(errors,form.getPassword(),form.getConfirmPassword(),"confirmPassword");
     }
 
     public void checkNicknameDuplication(Errors errors, String nickname) {
         if (accountRepository.existsByNickname(nickname)){
-            errors.rejectValue("nickname", "invalid.nickname","이미 사용중인 닉네임입니다.");
+            errors.rejectValue("nickname", ErrorCodeConfig.DUPLICATED_NICKNAME_ERROR_CODE);
         }
     }
 
-    private void checkConfirmPassword(Errors errors, String password, String confirmPassword) {
+    public void checkConfirmPasswordNotEqual(Errors errors, String password, String confirmPassword,String errorFiledName) {
         if(!password.equals(confirmPassword)){
-            errors.rejectValue("password", "invalid.password","패스워드가 일치하지 않습니다.");
+            errors.rejectValue(errorFiledName, ErrorCodeConfig.CONFIRM_PASSWORD_NOT_MATCHING_ERROR_CODE);
         }
     }
 
     private void checkEmailDuplication(Errors errors, String email) {
         if (accountRepository.existsByEmail(email)) {
-            errors.rejectValue("email", "invalid.email", new Object[]{email}, "이미 사용중인 이메일입니다.");
+            errors.rejectValue("email", ErrorCodeConfig.DUPLICATED_EMAIL_ERROR_CODE);
         }
     }
 }

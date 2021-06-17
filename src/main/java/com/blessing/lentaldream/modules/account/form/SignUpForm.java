@@ -1,5 +1,6 @@
 package com.blessing.lentaldream.modules.account.form;
 
+import com.blessing.lentaldream.infra.config.AnnotationValidatorErrorMessageConfig;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class SignUpForm {
     @NotBlank
     @Length(min = 3, max = 20)
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9_-]{3,20}$")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9_-]{3,20}$",message = AnnotationValidatorErrorMessageConfig.NICKNAME_PATTERN_ERROR_MESSAGE)
     private String nickname;
 
     @NotBlank

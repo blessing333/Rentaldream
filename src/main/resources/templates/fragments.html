@@ -802,10 +802,7 @@
             <a class="nav-link" id="address-tab" th:classappend="${curMenu == 'zone'} ? active" th:href="@{/account/settings/zone}"><i class="ti-location-pin"></i>활동 지역</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="account-detail-tab" th:classappend="${curMenu == 'details'} ? active" th:href="@{/account/settings/details}"><i class="ti-id-badge"></i>계정 상세 설정</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}"><i class="ti-lock"></i>로그아웃</a>
+            <a class="nav-link" id="account-detail-tab" th:classappend="${curMenu == 'password'} ? active" th:href="@{/account/settings/password}"><i class="ti-key"></i>비밀번호 변경</a>
         </li>
     </ul>
 </div>

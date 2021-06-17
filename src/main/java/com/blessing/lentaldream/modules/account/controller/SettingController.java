@@ -2,9 +2,11 @@ package com.blessing.lentaldream.modules.account.controller;
 
 import com.blessing.lentaldream.modules.account.CurrentUser;
 import com.blessing.lentaldream.modules.account.domain.Account;
+import com.blessing.lentaldream.modules.account.form.PasswordForm;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import com.blessing.lentaldream.modules.account.service.AccountService;
+import com.blessing.lentaldream.modules.account.validator.PasswordFormValidator;
 import com.blessing.lentaldream.modules.account.validator.ProfileFormValidator;
 import com.blessing.lentaldream.modules.tag.Tag;
 import com.blessing.lentaldream.modules.tag.TagForm;
@@ -22,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -40,10 +43,17 @@ public class SettingController {
     private final AccountRepository accountRepository;
     private final ZoneService zoneService;
     private final ModelMapper modelMapper;
+    private final PasswordFormValidator passwordFormValidator;
+    private static final String PASSWORD_CHANGE_MESSAGE = "비밀번호가 변경되었습니다.";
 
     @InitBinder("profileForm")
-    public void initBinder(WebDataBinder webDataBinder){
+    public void initProfileFormBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(profileFormValidator);
+    }
+
+    @InitBinder("passwordForm")
+    public void initPasswordFormBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(passwordFormValidator);
     }
 
     @GetMapping(ACCOUNT_SETTING_PROFILE_URL)
@@ -118,5 +128,23 @@ public class SettingController {
         }
         accountService.removeZone(account.getId(), zone);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping(ACCOUNT_SETTING_PASSWORD_URL)
+    public String createPasswordModifyView(@CurrentUser Account account,Model model){
+        PasswordForm passwordForm = new PasswordForm();
+        model.addAttribute(account);
+        model.addAttribute(passwordForm);
+        return ACCOUNT_SETTING_PASSWORD_VIEW;
+    }
+
+    @PostMapping(ACCOUNT_SETTING_PASSWORD_URL)
+    public String passwordModify(@CurrentUser Account account, @Valid @ModelAttribute PasswordForm passwordForm, Errors errors, Model model, RedirectAttributes redirectAttributes){
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            return ACCOUNT_SETTING_PASSWORD_VIEW;
+        }
+        accountService.changeAccountPassword(account.getId(),passwordForm);
+        redirectAttributes.addFlashAttribute("message",PASSWORD_CHANGE_MESSAGE);
+        return REDIRECT_URL + ACCOUNT_SETTING_PASSWORD_URL;
     }
 }

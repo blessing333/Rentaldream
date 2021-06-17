@@ -10,5 +10,5 @@ public class UrlConfig {
     public final static String ACCOUNT_SETTING_PROFILE_URL = "/account/settings/profile";
     public final static String ACCOUNT_SETTING_TAG_URL = "/account/settings/tag";
     public final static String ACCOUNT_SETTING_ZONE_URL = "/account/settings/zone";
-    public final static String ACCOUNT_SETTING_DETAILS_URL = "/account/settings/details";
+    public final static String ACCOUNT_SETTING_PASSWORD_URL = "/account/settings/password";
 }

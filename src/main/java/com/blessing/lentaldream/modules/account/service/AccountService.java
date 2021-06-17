@@ -4,6 +4,7 @@ import com.blessing.lentaldream.modules.account.UserAccount;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.domain.AccountTag;
 import com.blessing.lentaldream.modules.account.domain.AccountZone;
+import com.blessing.lentaldream.modules.account.form.PasswordForm;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
 import com.blessing.lentaldream.modules.account.form.SignUpForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
@@ -124,6 +125,14 @@ public class AccountService implements UserDetailsService {
         Optional<Account> foundAccount = accountRepository.findById(accountId);
         foundAccount.ifPresent(account -> {
             account.updateProfile(profileForm);
+        });
+    }
+
+    public void changeAccountPassword(Long accountId, PasswordForm passwordForm) {
+        Optional<Account> foundAccount = accountRepository.findById(accountId);
+        foundAccount.ifPresent(account -> {
+            String encodedPassword = passwordEncoder.encode(passwordForm.getNewPassword());
+            account.changePassword(encodedPassword);
         });
     }
 }

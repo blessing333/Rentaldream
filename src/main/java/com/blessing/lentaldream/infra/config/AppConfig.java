@@ -13,6 +13,7 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -21,4 +22,12 @@ public class AppConfig {
                 .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
         return modelMapper;
     }
+
+//    @Bean("errorCode")
+//    public PropertiesFactoryBean propertiesFactoryBean() throws  Exception{
+//        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+//        ClassPathResource classPathResource = new ClassPathResource("messages.properties");
+//        propertiesFactoryBean.setLocation(classPathResource);
+//        return propertiesFactoryBean;
+//    }
 }

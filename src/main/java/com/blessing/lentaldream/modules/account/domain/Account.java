@@ -111,4 +111,8 @@ public class Account {
         setUrl(profileForm.getUrl());
         setLocation(profileForm.getLocation());
     }
+
+    public void changePassword(String newPassword) {
+        setPassword(newPassword);
+    }
 }
