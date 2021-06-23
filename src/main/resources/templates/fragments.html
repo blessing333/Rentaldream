@@ -22,6 +22,9 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="/assets/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/ionicons.min.css">
@@ -43,6 +46,8 @@
     <link rel="stylesheet" href="/assets/css/responsive.css">
     <!-- Tagify CSS -->
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <!--    SummerNote CSS-->
+    <link rel="stylesheet" href=/node_modules/summernote/dist/summernote-lite.css>
     <style>
         .tagify-outside{
             border: 0;
@@ -775,13 +780,50 @@
             var tagInput = document.querySelector("#tags");
             var tagify = new Tagify(tagInput, {
                 pattern: /^.{0,20}$/,
-                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                whitelist: JSON.parse(document.querySelector("#recommend-tag-list").textContent),
                 dropdown : {
                     enabled: 1, // suggest tags after a single character input
                 } // map tags
             });
+
             tagify.on("add", onAdd);
             tagify.on("remove", onRemove);
+            // add a class to Tagify's input element
+            tagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+        });
+    </script>
+</div>
+
+<div th:fragment="update-tags-form">
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function() {
+            var itemTagInput = document.querySelector("#tags");
+            var itemTagify = new Tagify(itemTagInput, {
+                pattern: /^.{0,20}$/,
+                whitelist: JSON.parse(document.querySelector("#recommend-tag-list").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                } // map tags
+            });
+
+            // add a class to Tagify's input element
+            itemTagify.DOM.input.classList.add('form-control');
+            // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+            itemTagify.DOM.scope.parentNode.insertBefore(itemTagify.DOM.input, itemTagify.DOM.scope);
+
+            var tagInput = document.querySelector("#zones");
+            var tagify = new Tagify(tagInput, {
+                enforceWhitelist: true,
+                whitelist: JSON.parse(document.querySelector("#city-list").textContent),
+                dropdown : {
+                    enabled: 1, // suggest tags after a single character input
+                    position: "text",
+                } // map tags
+            });
+
             // add a class to Tagify's input element
             tagify.DOM.input.classList.add('form-control');
             // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
@@ -839,10 +881,9 @@
             }
 
             var tagInput = document.querySelector("#zones");
-
             var tagify = new Tagify(tagInput, {
                 enforceWhitelist: true,
-                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                whitelist: JSON.parse(document.querySelector("#city-list").textContent),
                 dropdown : {
                     enabled: 1, // suggest tags after a single character input
                     position: "text",
@@ -859,4 +900,46 @@
         });
     </script>
 </div>
+
+<div th:fragment="divider" class="row">
+    <div class="col-12">
+        <div class="divider"></div>
+    </div>
+</div>
+
+<script type="application/javascript" th:fragment="form-validation">
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+</script>
+
+<div th:fragment="editor-script">
+    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            $('.editor').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '상품에 대해 자세히 적어 주세요.',
+                tabsize: 2,
+                height: 300
+            });
+        });
+    </script>
+</div>
+
 </html>

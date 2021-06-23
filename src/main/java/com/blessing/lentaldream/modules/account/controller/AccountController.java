@@ -53,6 +53,4 @@ public class AccountController {
         return LOGIN_VIEW;
     }
 
-
-
 }

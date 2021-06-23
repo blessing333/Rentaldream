@@ -1,5 +1,7 @@
 package com.blessing.lentaldream.modules.zone;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ZoneService {
     private final ZoneRepository zoneRepository;
+    private final ObjectMapper objectMapper;
 
     @PostConstruct
     public void init() throws IOException {
@@ -43,11 +46,13 @@ public class ZoneService {
         }
     }
 
-    public List<Zone> findAllZones() {
-        return zoneRepository.findAll();
-    }
-
     public Zone findByCityAndProvince(String city, String province) {
         return zoneRepository.findByCityAndProvince(city,province);
+    }
+
+    public String findAllZonesAsJsonString() throws JsonProcessingException {
+        List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
+        return objectMapper.writeValueAsString(allZones);
+
     }
 }

@@ -158,7 +158,7 @@ class SettingControllerTest {
         mockMvc.perform(get(ACCOUNT_SETTING_TAG_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(ACCOUNT_SETTING_TAG_VIEW))
-                .andExpect(model().attributeExists("tags","account","whitelist"));
+                .andExpect(model().attributeExists("tags","account","recommendTagList"));
     }
 
     @DisplayName("유저 관심 태그 추가")
@@ -212,7 +212,7 @@ class SettingControllerTest {
         mockMvc.perform(get(ACCOUNT_SETTING_ZONE_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(ACCOUNT_SETTING_ZONE_VIEW))
-                .andExpect(model().attributeExists("zones","account","whitelist"));
+                .andExpect(model().attributeExists("zones","account","cityList"));
     }
 
     @DisplayName("유저 활동 지역 태그 추가")
@@ -234,7 +234,7 @@ class SettingControllerTest {
         assertNotNull(result);
     }
 
-    @DisplayName("유저 관심 태그 삭제")
+    @DisplayName("유저 활동 지역 태그 삭제")
     @LoginWith(TEST_USER)
     @Test
     public void accountZoneRemoveTest() throws Exception {

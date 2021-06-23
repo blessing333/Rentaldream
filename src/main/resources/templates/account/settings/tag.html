@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-body">
                                 <p>관심 있는 물품을 태그로 등록하세요. 해당 상품에 대한 계시물이 올라오면 알림을 발송해 드려요!</p>
-                                <div id="whitelist" th:text="${whitelist}" hidden></div>
+                                <div id="recommend-tag-list" th:text="${recommendTagList}" hidden></div>
                                 <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
                                        class="tagify-outside" aria-describedby="tagHelp"/>
                             </div>

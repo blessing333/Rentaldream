@@ -10,4 +10,7 @@ public class ErrorCodeConfig {
     //비밀번호 관련 에러코드
     public final static String INVALID_PASSWORD_ERROR_CODE ="invalid.password";
     public final static String CONFIRM_PASSWORD_NOT_MATCHING_ERROR_CODE ="invalid.confirmPassword";
+
+    // 게시글 등록 관련 에러코드
+    public final static String MAX_OUT_TAG_COUNT = "wrong.tagCount";
 }

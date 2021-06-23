@@ -28,7 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.blessing.lentaldream.infra.config.UrlConfig.*;
 import static com.blessing.lentaldream.infra.config.ViewNameConfig.*;
@@ -80,8 +79,8 @@ public class SettingController {
         model.addAttribute(account);
         List<String> tagNameList = accountService.getTagNameList(account.getId());
         model.addAttribute("tags", tagNameList);
-        List<String> allTags = tagService.findAllTag().stream().map(Tag::getTagName).collect(Collectors.toList());
-        model.addAttribute("whitelist", objectMapper.writeValueAsString(allTags));
+        String jsonString = tagService.findAllTagAsJsonString();
+        model.addAttribute("recommendTagList",jsonString);
         return ACCOUNT_SETTING_TAG_VIEW;
     }
 
@@ -109,8 +108,8 @@ public class SettingController {
         model.addAttribute(account);
         List<String> zoneList = accountService.getZoneList(account.getId());
         model.addAttribute("zones", zoneList);
-        List<String> allZone = zoneService.findAllZones().stream().map(Zone::toString).collect(Collectors.toList());
-        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZone));
+        String jsonString = zoneService.findAllZonesAsJsonString();
+        model.addAttribute("cityList", jsonString);
         return ACCOUNT_SETTING_ZONE_VIEW;
     }
 
