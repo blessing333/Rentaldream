@@ -11,4 +11,7 @@ public class UrlConfig {
     public final static String ACCOUNT_SETTING_TAG_URL = "/account/settings/tag";
     public final static String ACCOUNT_SETTING_ZONE_URL = "/account/settings/zone";
     public final static String ACCOUNT_SETTING_PASSWORD_URL = "/account/settings/password";
+
+    //계시글 관련 URL
+    public final static String POST_NEW_POST_URL = "/post/new-post";
 }

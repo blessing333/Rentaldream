@@ -34,7 +34,7 @@
                             </div>
                             <div class="card-body">
                                 <p>주로 활동하는 지역을 등록하세요. 해당 지역에 계시물이 올라오면 알림을 발송해 드려요!</p>
-                                <div id="whitelist" th:text="${whitelist}" hidden></div>
+                                <div id="city-list" th:text="${cityList}" hidden></div>
                                 <input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
                                        class="tagify-outside" aria-describedby="tagHelp"/>
                             </div>

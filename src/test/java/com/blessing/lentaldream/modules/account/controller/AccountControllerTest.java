@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.blessing.lentaldream.infra.config.ErrorCodeConfig.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -65,7 +66,7 @@ class AccountControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("signUpForm"))
-                .andExpect(model().attributeHasFieldErrorCode("signUpForm","email","invalid.email"))
+                .andExpect(model().attributeHasFieldErrorCode("signUpForm","email", DUPLICATED_EMAIL_ERROR_CODE))
                 .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
     }
@@ -81,7 +82,7 @@ class AccountControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("signUpForm"))
-                .andExpect(model().attributeHasFieldErrorCode("signUpForm","nickname","invalid.nickname"))
+                .andExpect(model().attributeHasFieldErrorCode("signUpForm","nickname", DUPLICATED_NICKNAME_ERROR_CODE))
                 .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
     }
@@ -97,7 +98,7 @@ class AccountControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("signUpForm"))
-                .andExpect(model().attributeHasFieldErrorCode("signUpForm","password","invalid.password"))
+                .andExpect(model().attributeHasFieldErrorCode("signUpForm","confirmPassword", CONFIRM_PASSWORD_NOT_MATCHING_ERROR_CODE))
                 .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
     }

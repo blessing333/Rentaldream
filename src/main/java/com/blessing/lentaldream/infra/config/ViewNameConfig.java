@@ -7,4 +7,7 @@ public class ViewNameConfig {
     public static final String ACCOUNT_SETTING_TAG_VIEW = "account/settings/tag";
     public static final String ACCOUNT_SETTING_ZONE_VIEW = "account/settings/zone";
     public static final String ACCOUNT_SETTING_PASSWORD_VIEW = "account/settings/password";
+
+    //포스트 뷰
+    public static final String POST_NEW_POST_VIEW = "post/post-form";
 }
