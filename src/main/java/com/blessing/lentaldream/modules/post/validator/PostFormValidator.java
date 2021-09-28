@@ -22,7 +22,7 @@ public class PostFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PostForm postForm = (PostForm) target;
         TagForm [] tagArray = postForm.getTagsAsArray();
-        if(tagArray.length >= MAXIMUM_TAG_COUNT){
+        if(tagArray!= null && tagArray.length > MAXIMUM_TAG_COUNT){
             errors.rejectValue("tagsWithJsonString", ErrorCodeConfig.MAX_OUT_TAG_COUNT);
         }
     }
