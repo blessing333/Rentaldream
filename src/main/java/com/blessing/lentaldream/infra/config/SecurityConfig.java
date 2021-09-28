@@ -24,10 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .mvcMatchers(
+                .antMatchers(
                         UrlConfig.HOME_URL,
                         UrlConfig.SIGN_UP_URL,
-                        UrlConfig.LOGIN_URL
+                        UrlConfig.LOGIN_URL,
+                        UrlConfig.POST_URL+"/{id}"
 
                 )
                 .permitAll()

@@ -19,7 +19,7 @@
                 <div class="tab-content dashboard_content">
                     <div class="card">
                         <div class="card-header">
-                            <h3>상품 등록</h3>
+                            <h3>게시글 수정</h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
 
-                            <form  class="needs-validation" method="post" th:action="@{/new-post}" name="postForm" th:object="${postForm}" novalidate>
+                            <form  class="needs-validation" method="post" th:action="@{'/edit-post/'+${postId}}" name="postForm" th:object="${postForm}" novalidate>
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <input id="profileImage" type="hidden" th:field="*{thumbnail}" class="form-control" />
@@ -71,7 +71,7 @@
                                         <div id="recommend-tag-list" th:text="${recommendTagList}" hidden></div>
 
                                         <label for="tags"> 상품 태그<span class="required">*</span></label>
-                                        <input id="tags" type="text" name="tagsWithJsonString" class="tagify-outside"/>
+                                        <input id="tags" type="text" name="tagsWithJsonString" th:value="${#strings.listJoin(allTagNames, ',')}" class="tagify-outside"/>
                                             <p class="form-text text-muted">
                                                 -태그는 ,(콤마) 혹은 엔터로 구분되며 최대 3개까지 설정할 수 있습니다.<br/>
                                                 -태그는 검색의 부가정보로 사용되며, 해당 태그를 관심 태그로 설정한 유저에게 알림이 발송됩니다.<br/>
@@ -85,7 +85,7 @@
                                     <div class="form-group col-md-12">
                                         <div id="city-list" th:text="${cityList}" hidden></div>
                                         <label for="zones"> 거래 지역<span class="required">*</span></label>
-                                        <input id="zones" type="text" name="zonesWithJsonString" class="tagify-outside"/>
+                                        <input id="zones" type="text" name="zonesWithJsonString" class="tagify-outside" th:value="${#strings.listJoin(allZoneNames, ',')}"/>
                                         <p id="zones-help" class="form-text text-muted">
                                             주로 거래하는 지역을 입력하세요.
                                         </p>
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button id="submit-button" type="submit" class="btn btn-fill-out" name="submit" value="Submit">등록</button>
+                                    <button id="submit-button" type="submit" class="btn btn-fill-out" name="submit" value="Submit">수정하기</button>
                                 </div>
                             </form>
                         </div>

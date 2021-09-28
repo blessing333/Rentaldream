@@ -1,6 +1,8 @@
 package com.blessing.lentaldream.modules.post.domain;
 
 import com.blessing.lentaldream.modules.tag.Tag;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = {"post","tag"})
 public class PostTag {
     @GeneratedValue @Id
     @Column(name = "POST_TAG_ID")
@@ -28,4 +31,5 @@ public class PostTag {
         instance.setTag(tag);
         return instance;
     }
+
 }

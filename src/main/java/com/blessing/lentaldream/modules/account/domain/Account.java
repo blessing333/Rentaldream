@@ -1,11 +1,14 @@
 package com.blessing.lentaldream.modules.account.domain;
 
+import com.blessing.lentaldream.modules.account.favorite.Favorite;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
+import com.blessing.lentaldream.modules.post.domain.Post;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,6 +36,9 @@ public class Account {
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AccountZone> AccountZones= new HashSet<>();
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Favorite> favorites= new HashSet<>();
 
     private String password;
 
@@ -111,7 +117,24 @@ public class Account {
         setUrl(profileForm.getUrl());
         setLocation(profileForm.getLocation());
     }
+    public void addFavorite(Favorite favorite){
+        this.getFavorites().add(favorite);
+    }
 
+    public void deleteFavorite(Favorite favorite){
+        this.getFavorites().remove(favorite);
+    }
+
+    public boolean checkFavorite(Post post){
+        Set<Favorite> favoriteSet = this.getFavorites();
+        boolean result = false;
+        for(Favorite favorite : favoriteSet){
+            if(Objects.equals(favorite.getPost().getId(), post.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void changePassword(String newPassword) {
         setPassword(newPassword);
     }

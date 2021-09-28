@@ -4,12 +4,15 @@ import com.blessing.lentaldream.modules.account.UserAccount;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.domain.AccountTag;
 import com.blessing.lentaldream.modules.account.domain.AccountZone;
+import com.blessing.lentaldream.modules.account.favorite.Favorite;
 import com.blessing.lentaldream.modules.account.form.PasswordForm;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
 import com.blessing.lentaldream.modules.account.form.SignUpForm;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import com.blessing.lentaldream.modules.account.repository.AccountTagRepository;
 import com.blessing.lentaldream.modules.account.repository.AccountZoneRepository;
+import com.blessing.lentaldream.modules.post.PostService;
+import com.blessing.lentaldream.modules.post.domain.Post;
 import com.blessing.lentaldream.modules.tag.Tag;
 import com.blessing.lentaldream.modules.zone.Zone;
 import com.blessing.lentaldream.modules.zone.ZoneForm;
@@ -40,6 +43,7 @@ public class AccountService implements UserDetailsService {
     private final ZoneService zoneService;
     private final AccountTagRepository accountTagRepository;
     private final AccountZoneRepository accountZoneRepository;
+    private final PostService postService;
     private final ModelMapper modelMapper;
 
     public Account processSignUp(SignUpForm signUpForm){
@@ -134,5 +138,25 @@ public class AccountService implements UserDetailsService {
             String encodedPassword = passwordEncoder.encode(passwordForm.getNewPassword());
             account.changePassword(encodedPassword);
         });
+    }
+
+    public void addFavoriteToAccount(Account account, Long postId){
+        Account foundAccount = accountRepository.findByNickname(account.getNickname());
+        Post post = postService.loadPostInformation(postId);
+        Favorite favorite = Favorite.createNewFavorite(account, post);
+        if(!foundAccount.checkFavorite(post)) {
+            post.increaseFavoriteCount();
+            foundAccount.addFavorite(favorite);
+        }
+    }
+
+    public void deleteFavoriteFromAccount(Account account, Long postId) {
+        Account foundAccount = accountRepository.findByNickname(account.getNickname());
+        Post post = postService.loadPostInformation(postId);
+        Favorite target = Favorite.createNewFavorite(account,post);
+        if(foundAccount.checkFavorite(post)) {
+            foundAccount.deleteFavorite(target);
+            post.decreaseFavoriteCount();
+        }
     }
 }

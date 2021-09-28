@@ -10,4 +10,6 @@ public class ViewNameConfig {
 
     //포스트 뷰
     public static final String POST_NEW_POST_VIEW = "post/post-form";
+    public static final String POST_EDIT_VIEW = "post/post-edit-form";
+    public static final String POST_VIEW = "post/post";
 }
