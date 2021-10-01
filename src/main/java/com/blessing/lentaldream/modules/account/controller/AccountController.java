@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static com.blessing.lentaldream.infra.config.UrlConfig.*;
@@ -49,7 +50,7 @@ public class AccountController {
     }
 
     @GetMapping(LOGIN_URL)
-    public String createLoginView(){
+    public String createLoginView(HttpServletRequest request) {
         return LOGIN_VIEW;
     }
 

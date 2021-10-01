@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.formLogin().loginPage("/login").permitAll();
-        http.logout().logoutSuccessUrl("/");
+        http.logout().logoutSuccessUrl("/").invalidateHttpSession(false);
         http.rememberMe().userDetailsService(userDetailsService).tokenRepository(tokenRepository());
     }
 

@@ -3,9 +3,10 @@ package com.blessing.lentaldream.modules.post;
 import com.blessing.lentaldream.modules.account.CurrentUser;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
+import com.blessing.lentaldream.modules.comment.CommentForm;
+import com.blessing.lentaldream.modules.comment.CommentService;
 import com.blessing.lentaldream.modules.post.domain.Post;
 import com.blessing.lentaldream.modules.post.form.PostForm;
-import com.blessing.lentaldream.modules.post.repository.PostRepository;
 import com.blessing.lentaldream.modules.post.validator.PostFormValidator;
 import com.blessing.lentaldream.modules.tag.TagService;
 import com.blessing.lentaldream.modules.zone.ZoneService;
@@ -31,10 +32,10 @@ public class PostController {
     private final TagService tagService;
     private final ZoneService zoneService;
     private final PostService postService;
-    private final PostRepository postRepository;
     private final PostFormValidator postFormValidator;
     private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
+    private final CommentService commentService;
 
     @InitBinder("postForm")
     public void init(WebDataBinder webDataBinder){
@@ -65,9 +66,15 @@ public class PostController {
     @GetMapping(POST_URL+"/{id}")
     public String createPostView(@CurrentUser Account account, Model model, @PathVariable Long id){
         Post post = postService.loadPostInformationWithIncreaseViewCount(id);
+        CommentForm commentForm = new CommentForm();
+        commentForm.setPost(post.getId());
         model.addAttribute(post);
-        if(account != null)
+        if(account != null) {
             accountRepository.findById(account.getId()).ifPresent(model::addAttribute);
+            commentForm.setWriter(account.getId());
+        }
+
+        model.addAttribute(commentForm);
         return POST_VIEW;
     }
 
