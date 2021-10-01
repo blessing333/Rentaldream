@@ -20,4 +20,8 @@ public class UrlConfig {
 
     //관심상품 관련
     public static final String FAVORITE_URL = "/account/favorite";
+
+    //댓글
+    public static final String COMMENT_URL = "/comment";
+    public static final String COMMENT_EDIT_URL = COMMENT_URL + "/edit";
 }

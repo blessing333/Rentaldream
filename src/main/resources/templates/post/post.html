@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments.html::head"></head>
+<!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
 <style>
     .btn-addition{
         font-size: 15px;
         margin-right: 10px;
     }
+    .btn-icon{
+        border: 0;
+        outline: 0;
+        background-color: #FFFFFF;
+        color: #FF324D;
+    }
+    .form-icon-button{
+        display: inline;
+
+    }
+
 </style>
 <body>
 
@@ -22,7 +35,7 @@
                         <div class="popup_content">
                             <div class="popup-text">
                                 <p th:text="${message}">message content</p>
-                                <button type="button" class="close btn btn-fill-out" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close btn btn-fill-line btn-block text-uppercase rounded-0" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true" style="font-size: 18px;" >확인</span>
                                 </button>
                             </div>
@@ -71,7 +84,7 @@
                                 <div class="pr_desc">
                                     <i class="ti-heart"></i>&nbsp;<span th:text="${post.favoriteCount}">9</span> &nbsp; | &nbsp;
                                     <i class="ti-eye"></i>&nbsp;<span th:text="${post.viewCount}">22</span> &nbsp; | &nbsp;
-                                    <i class="ti-timer"></i>&nbsp;<span th:text="${post.createdDate}"></span> &nbsp;
+                                    <i class="ti-timer"></i>&nbsp;<span th:text="${#temporals.format(post.createdDate,'yyyy-MM-dd HH:mm:ss')}"></span> &nbsp;
                                 <br/>
                                 </div>
                             </div>
@@ -97,9 +110,9 @@
                                 </span>
                             </p>
                             <div class="row" sec:authorize="isAuthenticated()" th:if="${post.isPoster(#authentication.principal)}">
-                                <button class="btn-addition btn btn-fill-out btn-report" type="button" th:onclick="'location.href=\''+ @{'/edit-post/'+${post.id}} + '\''">수정하기</button>
+                                <button class="btn-addition btn btn-fill-mint btn-report" type="button" th:onclick="'location.href=\''+ @{'/edit-post/'+${post.id}} + '\''">수정하기</button>
                                 <form class="form-inline" th:action="@{'/post/'+${post.id}}" th:method="delete">
-                                    <button class="btn-addition btn btn-fill-out btn-report" type="submit" th:onclick="'location.href=\''+ @{'/post/'+${post.id}} + '\''">삭제하기</button>
+                                    <button class="btn-addition btn btn-fill-mint btn-report" type="submit" th:onclick="'location.href=\''+ @{'/post/'+${post.id}} + '\''">삭제하기</button>
                                 </form>
                             </div>
                         </div>
@@ -109,14 +122,14 @@
                     <div class="cart_extra">
                         <div class="cart_btn">
                             <div class ="row">
-                                <form class="form-inline" th:action="@{/account/favorite}" th:method="post" th:if="${account == null || !account.checkFavorite(post)}">
+                                    <form class="form-inline" th:action="@{/account/favorite}" th:method="post"  th:if="${account == null || !account.checkFavorite(post)}">
                                     <input name="postId" type="text" hidden th:value="${post.id}" />
-                                    <button class="btn-addition btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i>관심상품 등록</button>
+                                    <button class="btn-addition btn btn-fill-line btn-block text-uppercase rounded-0 btn-addtocart" type="submit"><i class="icon-basket-loaded"></i>관심상품 등록</button>
                                 </form>
 
                                 <form class="form-inline" th:action="@{/account/favorite}" th:method="delete"  th:if="${account !=null && account.checkFavorite(post)}">
                                     <input name="postId" type="text" hidden th:value="${post.id}" />
-                                    <button class="btn-addition btn btn-fill-out btn-addtocart" type="submit"><i class="icon-basket-loaded"></i>관심상품 해제</button>
+                                    <button class="btn-addition btn btn-fill-line btn-block text-uppercase rounded-0 btn-addtocart" type="submit"><i class="icon-basket-loaded"></i>관심상품 해제</button>
                                 </form>
                                 <button class="btn-addition btn btn-fill-out btn-report" type="button"><i class="ti-alert"></i>신고하기</button>
                             </div>
@@ -128,7 +141,7 @@
         </div>
         <div class="row">
         	<div class="col-12">
-            	<div class="large_divider clearfix"></div>
+            	<div class="medium_divider clearfix"></div>
             </div>
         </div>
         <div class="row">
@@ -153,72 +166,35 @@
                     <div class="tab-content shop_info_tab">
                         <div class="tab-pane show active" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
                             <div class="comments">
-                                <h5 class="product_tab_title">2 Review For <span>Blue Dress For Woman</span></h5>
+                                <h5 class="product_tab_title">상품 문의 (<span th:text="${post.comments.size()}"></span>)</h5>
                                 <ul class="list_none comment_list mt-4">
-                                    <li>
-                                        <div class="comment_img">
-                                            <img src="assets/images/user1.jpg" alt="user1"/>
-                                        </div>
+                                    <li th:each="comment: ${post.comments}">
                                         <div class="comment_block">
-                                            <div class="rating_wrap">
-                                                <div class="rating">
-                                                    <div class="product_rate" style="width:80%"></div>
-                                                </div>
-                                            </div>
+                                            <span class="review_author" th:text="${comment.writer.nickname}">Alea Brooks</span>
+                                                    <form class="form-icon-button" th:action="@{'/comment/' + ${comment.id}}" th:method="delete"  sec:authorize="isAuthenticated()" th:if="${comment.isWriter(#authentication.principal)}">
+                                                        <button class="btn-icon"><i class="ti-trash"></i> </button>
+                                                    </form>
                                             <p class="customer_meta">
-                                                <span class="review_author">Alea Brooks</span>
-                                                <span class="comment-date">March 5, 2018</span>
+                                                <span class="comment-date" th:text="${#temporals.format(comment.createdDate,'yyyy-MM-dd HH:mm:ss')}">March 5, 2018</span>
                                             </p>
+
                                             <div class="description">
-                                                <p>Lorem Ipsumin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="comment_img">
-                                            <img src="assets/images/user2.jpg" alt="user2"/>
-                                        </div>
-                                        <div class="comment_block">
-                                            <div class="rating_wrap">
-                                                <div class="rating">
-                                                    <div class="product_rate" style="width:60%"></div>
-                                                </div>
-                                            </div>
-                                            <p class="customer_meta">
-                                                <span class="review_author">Grace Wong</span>
-                                                <span class="comment-date">June 17, 2018</span>
-                                            </p>
-                                            <div class="description">
-                                                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+                                                <p th:text="${comment.content}">Lorem Ipsumin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate</p>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <div class="review_form field_form">
-                                <h5>Add a review</h5>
-                                <form class="row mt-3">
+                                <form class="row mt-3" th:object="${commentForm}" th:action="@{'/comment'}" th:method="post">
                                     <div class="form-group col-12">
-                                        <div class="star_rating">
-                                            <span data-value="1"><i class="far fa-star"></i></span>
-                                            <span data-value="2"><i class="far fa-star"></i></span>
-                                            <span data-value="3"><i class="far fa-star"></i></span>
-                                            <span data-value="4"><i class="far fa-star"></i></span>
-                                            <span data-value="5"><i class="far fa-star"></i></span>
-                                        </div>
+                                        <input  class="form-control" th:field = "*{writer}" hidden >
+                                        <input  class="form-control" th:field = "*{post}" hidden>
+                                        <textarea th:if="${account == null}" placeholder="상품에 대한 문의사항을 남기기 위해서 로그인 해주세요 *" class="form-control" onclick="location.href='../login';"></textarea>
+                                        <textarea th:unless="${account==null}" required="required" placeholder="상품에 대한 문의사항을 남겨주세요 *" class="form-control" th:field="*{content}" rows="4"></textarea>
                                     </div>
                                     <div class="form-group col-12">
-                                        <textarea required="required" placeholder="Your review *" class="form-control" name="message" rows="4"></textarea>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <input required="required" placeholder="Enter Name *" class="form-control" name="name" type="text">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <input required="required" placeholder="Enter Email *" class="form-control" name="email" type="email">
-                                    </div>
-
-                                    <div class="form-group col-12">
-                                        <button type="submit" class="btn btn-fill-out" name="submit" value="Submit">Submit Review</button>
+                                        <button th:if="${account !=null}" type="submit" class="btn btn-fill-out" name="submit" value="Submit">등록</button>
                                     </div>
                                 </form>
                             </div>
@@ -416,7 +392,7 @@
                         <div class="product">
                             <div class="product_img">
                                 <a href="post.html">
-                                    <img src="assets/images/product_img5.jpg" alt="product_img5">
+                                    <img src="/assets/images/product_img5.jpg" alt="product_img5">
                                 </a>
                                 <div class="product_action_box">
                                     <ul class="list_none pr_action_btn">

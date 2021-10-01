@@ -2,6 +2,7 @@ package com.blessing.lentaldream.modules.post.domain;
 
 import com.blessing.lentaldream.modules.account.UserAccount;
 import com.blessing.lentaldream.modules.account.domain.Account;
+import com.blessing.lentaldream.modules.comment.Comment;
 import com.blessing.lentaldream.modules.post.form.PostForm;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +42,9 @@ public class Post {
 
     @OneToMany(mappedBy ="post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostZone> zones = new HashSet<>();
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     private int price;
     private LocalDateTime createdDate;

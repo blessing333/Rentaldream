@@ -159,4 +159,11 @@ public class AccountService implements UserDetailsService {
             post.decreaseFavoriteCount();
         }
     }
+
+    public boolean checkValidAccountById(Long accountId){
+        return accountRepository.existsById(accountId);
+    }
+    public Optional<Account> findAccountById(Long accountId){
+        return accountRepository.findById(accountId);
+    }
 }
