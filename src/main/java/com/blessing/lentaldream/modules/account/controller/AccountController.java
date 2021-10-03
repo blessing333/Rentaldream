@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static com.blessing.lentaldream.infra.config.UrlConfig.*;
-import static com.blessing.lentaldream.infra.config.ViewNameConfig.LOGIN_VIEW;
 import static com.blessing.lentaldream.infra.config.ViewNameConfig.SIGN_UP_VIEW;
 
 @Controller
@@ -47,11 +45,6 @@ public class AccountController {
         Account account = accountService.processSignUp(form);
         accountService.login(account);
         return REDIRECT_URL+HOME_URL;
-    }
-
-    @GetMapping(LOGIN_URL)
-    public String createLoginView(HttpServletRequest request) {
-        return LOGIN_VIEW;
     }
 
 }
