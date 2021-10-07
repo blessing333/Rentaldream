@@ -1,4 +1,4 @@
-# lentaldream
+# Rentaldream
 지역 대여 플랫폼 빌려드림
 ## :link: 배포 URL
 * TODO
