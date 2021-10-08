@@ -12,7 +12,7 @@
     <meta name="keywords" content="ecommerce, electronics store, Fashion store, furniture store,  bootstrap 4, clean, minimal, modern, online store, responsive, retail, shopping, ecommerce store">
 
     <!-- SITE TITLE -->
-    <title>LentalDream</title>
+    <title>RentalDream</title>
     <!-- Favicon Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.png">
     <!-- Animation CSS -->
@@ -65,7 +65,7 @@
                     <div class="text-center text-md-right">
                         <ul class="header_list">
                             <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><i class="ti-user"></i><span>로그인 | 회원가입</span></a></li>
-                            <li sec:authorize="isAuthenticated()"><a href="compare.html"><i class="ti-control-shuffle"></i><span>알림</span></a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/notifications}"><i class="ti-bell"></i><span class="notification_count" th:if="${hasNotification}" th:text="${hasNotification}">2</span><span>알림</span></a></li>
                             <li sec:authorize="isAuthenticated()"><a href="wishlist.html"><i class="ti-heart"></i><span>Wishlist</span></a></li>
                             <li sec:authorize="isAuthenticated()">
                                 <form class="form-inline" th:action="@{/logout}" method="post">
@@ -367,6 +367,17 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="account-detail-tab" th:classappend="${curMenu == 'password'} ? active" th:href="@{/account/settings/password}"><i class="ti-key"></i>비밀번호 변경</a>
+        </li>
+    </ul>
+</div>
+
+<div th:fragment="notification-list-nav(curMenu)"  class="dashboard_menu">
+    <ul class="nav nav-tabs flex-column" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" id="new-tab" th:classappend="${curMenu == 'new'} ? active" th:href="@{/notifications}"><i class="ti-layout-grid2"></i>새로운 알림 <span th:text="${notifications.size()}"></span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="old-tab" th:classappend="${curMenu == 'all'} ? active" th:href="@{/notifications/all}"><i class="ti-shopping-cart-full"></i>모든 알림</a>
         </li>
     </ul>
 </div>

@@ -13,6 +13,8 @@ import com.blessing.lentaldream.modules.account.repository.AccountTagRepository;
 import com.blessing.lentaldream.modules.account.repository.AccountZoneRepository;
 import com.blessing.lentaldream.modules.post.PostService;
 import com.blessing.lentaldream.modules.post.domain.Post;
+import com.blessing.lentaldream.modules.post.form.PostForm;
+import com.blessing.lentaldream.modules.post.repository.PostRepository;
 import com.blessing.lentaldream.modules.tag.Tag;
 import com.blessing.lentaldream.modules.zone.Zone;
 import com.blessing.lentaldream.modules.zone.ZoneForm;
@@ -29,9 +31,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -45,6 +49,49 @@ public class AccountService implements UserDetailsService {
     private final AccountZoneRepository accountZoneRepository;
     private final PostService postService;
     private final ModelMapper modelMapper;
+    private final PostRepository postRepository;
+
+    @PostConstruct
+    public void initAccount(){
+       if(accountRepository.count() == 0){
+           SignUpForm signUpForm = new SignUpForm();
+           signUpForm.setNickname("blessing333");
+           signUpForm.setEmail("blessing_333@naver.com");
+           signUpForm.setPassword("qwerasdf");
+           signUpForm.setConfirmPassword("qwerasdf");
+           processSignUp(signUpForm);
+           SignUpForm signUpForm1 = new SignUpForm();
+           signUpForm1.setNickname("dlalswotl");
+           signUpForm1.setEmail("dlalswotl@naver.com");
+           signUpForm1.setPassword("qwerasdf");
+           signUpForm1.setConfirmPassword("qwerasdf");
+           processSignUp(signUpForm1);
+       }
+
+        if(postRepository.count() == 0){
+            PostForm postForm = new PostForm();
+            postForm.setTitle("test1");
+            postForm.setDescription("discr");
+            postForm.setPrice(1000);
+            postForm.setThumbnail(TestImageSource.imageSource);
+            postForm.setTagsWithJsonString("[{\"tagName\":\"모티\"},{\"tagName\":\"모티모티\"},{\"tagName\":\"기모티\"}]");
+            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
+            Account account = accountRepository.findByEmail("blessing_333@naver.com");
+            postService.addNewPost(account,postForm);
+            postForm.setTitle("test2");
+            postForm.setDescription("discr2");
+            postForm.setPrice(2000);
+            postForm.setTagsWithJsonString("[{\"tagName\":\"모티모티\"},{\"tagName\":\"기모티\"}]");
+            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
+            postService.addNewPost(account,postForm);
+            postForm.setTitle("test3");
+            postForm.setDescription("discr3");
+            postForm.setPrice(3000);
+            postForm.setTagsWithJsonString("[{\"tagName\":\"기모티\"}]");
+            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
+            postService.addNewPost(account,postForm);
+        }
+    }
 
     public Account processSignUp(SignUpForm signUpForm){
         String encodedPassword = passwordEncoder.encode(signUpForm.getPassword());
@@ -158,6 +205,9 @@ public class AccountService implements UserDetailsService {
             foundAccount.deleteFavorite(target);
             post.decreaseFavoriteCount();
         }
+    }
+    public List<Account> findAccountWithTagAndZone(List<Tag> tagList,List<Zone> zoneList){
+        return accountRepository.findAccountWithTagAndZone(tagList,zoneList);
     }
 
     public boolean checkValidAccountById(Long accountId){

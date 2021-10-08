@@ -86,24 +86,27 @@
             </div>
 		</div>
         <div class="row">
-            <div class="col-4">
+            <div class="col-4" th:each="post:${postList}">
                 <div class>
-                    <div class="item" th:each="post:${postList}">
+                    <div class="item">
                         <div class="product_wrap">
                             <div class="product_img">
-                                <a href="shop-product-detail.html">
+                                <a th:href="@{'/post/'+${post.id}}">
                                     <img th:src="${post.thumbnail}">
                                 </a>
                             </div>
                             <div class="product_info">
-                                <h6 class="product_title" th:text="${post.title}"><a href="shop-product-detail.html">Smart Watch External</a></h6>
+                                <h6 class="product_title" ><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">title</a></h6>
                                 <div class="product_price">
                                     <span class="price" th:text="${post.price}"></span><span> 원</span>
                                     <br>
+                                    <span th:each="tag: ${post.tags}" class="font-weight-border text-monospace badge badge-pill badge-info mr-3">
+                                        <i class="fa fa-tag"></i> <span th:text="${tag.tag.tagName}">Tag</span>
+                                    </span>
+                                    <br>
                                     <span th:each="zone: ${post.zones}" class="font-weight-bold text-monospace badge badge-primary mr-3">
                                         <i class="fa fa-globe"></i> <span th:text="${zone.zone.localCityName}">City</span>
-
-                                </span>
+                                    </span>
                                 </div>
                                 <div class="pr_desc">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>

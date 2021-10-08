@@ -61,17 +61,9 @@ public class Account {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
-    private boolean studyCreatedByEmail;
+    private boolean receivePostCreatedNotificationByEmail;
 
-    private boolean studyCreatedByWeb = true;
-
-    private boolean studyEnrollmentResultByEmail;
-
-    private boolean studyEnrollmentResultByWeb = true;
-
-    private boolean studyUpdatedByEmail;
-
-    private boolean studyUpdatedByWeb = true;
+    private boolean receivePostCreatedNotificationByWeb = true;
 
     public static Account createNewAccount(String nickname, String email, String password) {
         Account instance = new Account();
@@ -116,6 +108,7 @@ public class Account {
         setBio(profileForm.getBio());
         setUrl(profileForm.getUrl());
         setLocation(profileForm.getLocation());
+        setReceivePostCreatedNotificationByEmail(profileForm.isReceivePostCreatedNotificationByEmail());
     }
     public void addFavorite(Favorite favorite){
         this.getFavorites().add(favorite);

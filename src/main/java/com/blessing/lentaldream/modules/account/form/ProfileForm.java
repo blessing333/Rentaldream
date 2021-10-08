@@ -31,4 +31,7 @@ public class ProfileForm {
     @Length(max = 50)
     private String location;
 
+    private boolean receivePostCreatedNotificationByEmail;
+    private boolean receivePostCreatedNotificationByWeb;
+
 }

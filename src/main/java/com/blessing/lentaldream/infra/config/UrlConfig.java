@@ -24,4 +24,13 @@ public class UrlConfig {
     //댓글
     public static final String COMMENT_URL = "/comment";
     public static final String COMMENT_EDIT_URL = COMMENT_URL + "/edit";
+
+    //알림
+    public static final String NOTIFICATION_URL = "/notifications";
+    public static final String NOTIFICATION_LIST_URL = "/notifications";
+    public static final String NOTIFICATION_ALL_URL = NOTIFICATION_LIST_URL + "/all";
+
+
+
+
 }

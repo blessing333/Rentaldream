@@ -1,9 +1,13 @@
 package com.blessing.lentaldream.modules.post;
 
 import com.blessing.lentaldream.modules.account.domain.Account;
+import com.blessing.lentaldream.modules.account.repository.AccountRepository;
+import com.blessing.lentaldream.modules.notification.NotificationService;
+import com.blessing.lentaldream.modules.notification.NotificationType;
 import com.blessing.lentaldream.modules.post.domain.Post;
 import com.blessing.lentaldream.modules.post.domain.PostTag;
 import com.blessing.lentaldream.modules.post.domain.PostZone;
+import com.blessing.lentaldream.modules.post.event.PostCreatedEvent;
 import com.blessing.lentaldream.modules.post.form.PostForm;
 import com.blessing.lentaldream.modules.post.repository.PostRepository;
 import com.blessing.lentaldream.modules.tag.Tag;
@@ -13,10 +17,12 @@ import com.blessing.lentaldream.modules.zone.Zone;
 import com.blessing.lentaldream.modules.zone.ZoneForm;
 import com.blessing.lentaldream.modules.zone.ZoneService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +32,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final TagService tagService;
     private final ZoneService zoneService;
+    private final AccountRepository accountRepository;
+    private final NotificationService notificationService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Long addNewPost(Account account, PostForm postForm) {
         Post newPost = Post.createNewPost(postForm.getTitle(),account,postForm.getDescription(),postForm.getThumbnail(),postForm.getPrice());
@@ -42,6 +51,8 @@ public class PostService {
             newPost.addZone(postZone);
         }
         postRepository.save(newPost);
+        sendWebNotification(newPost);
+        applicationEventPublisher.publishEvent(new PostCreatedEvent(newPost));
         return newPost.getId();
     }
 
@@ -102,6 +113,15 @@ public class PostService {
     @Transactional(readOnly = true)
     public Optional<Post> findPostById(Long postId) {
         return postRepository.findById(postId);
+    }
+
+    private void sendWebNotification(Post post){
+        List<Tag> tagList = post.getTagsAsTagList(post);
+        List<Zone> zoneList = post.getZonesAsZoneList(post);
+        List<Account> accounts = accountRepository.findAccountWithTagAndZone(tagList,zoneList);
+        accounts.forEach(account -> {
+            notificationService.createNotification(post, account, NotificationType.ITEM_UPDATED);
+        });
     }
 
 
