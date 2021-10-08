@@ -56,6 +56,7 @@ public class PostController {
     @PostMapping(POST_NEW_POST_URL)
     public String createNewPost(@CurrentUser Account account, @Valid @ModelAttribute PostForm postForm, Errors errors, Model model, RedirectAttributes redirectAttributes){
         if(errors.hasErrors()){
+            model.addAttribute(postForm);
             return POST_NEW_POST_VIEW;
         }
         Long newPostId = postService.addNewPost(account,postForm);

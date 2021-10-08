@@ -12,4 +12,8 @@ public class ViewNameConfig {
     public static final String POST_NEW_POST_VIEW = "post/post-form";
     public static final String POST_EDIT_VIEW = "post/post-edit-form";
     public static final String POST_VIEW = "post/post";
+
+    //알림 뷰
+    public static final String NOTIFICATION_NEW_VIEW = "notification/new-notifications";
+    public static final String NOTIFICATION_ALL_VIEW = "notification/all-notifications";
 }

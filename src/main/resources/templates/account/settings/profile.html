@@ -74,6 +74,13 @@
                                                 주요 활동(사는 곳이나 직장을 다니는 곳 또는 놀러 다니는 곳) 지역의 도시 이름을 알려주세요.
                                             </small>
                                         </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="emailNotification">알림 설정</label>
+                                            <div class="custome-checkbox">
+                                                <input id="emailNotification"  type="checkbox" th:field="*{receivePostCreatedNotificationByEmail}">
+                                                <label for="emailNotification"><span>관심 상품 등록 알림 메일을 수신하겠습니다.</span></label>
+                                            </div>
+                                        </div>
                                         <div class="col-md-12">
                                             <button type="submit" class="btn btn-fill-out" name="submit" value="Submit">등록</button>
                                         </div>

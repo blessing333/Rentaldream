@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PostForm {
     @NotBlank
-    @Length(min = 2,max = 20)
+    @Length(min = 1,max = 20)
     private String title;
 
     @NotBlank

@@ -4,6 +4,8 @@ import com.blessing.lentaldream.modules.account.UserAccount;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.comment.Comment;
 import com.blessing.lentaldream.modules.post.form.PostForm;
+import com.blessing.lentaldream.modules.tag.Tag;
+import com.blessing.lentaldream.modules.zone.Zone;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,6 +48,9 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private PostStatus postStatus;
+
     private int price;
     private LocalDateTime createdDate;
     private int viewCount = 0;
@@ -59,6 +64,7 @@ public class Post {
         instance.setThumbnail(thumbnail);
         instance.setCreatedDate(LocalDateTime.now());
         instance.setPrice(price);
+        instance.setPostStatus(PostStatus.AVAILABLE);
         return instance;
     }
 
@@ -92,5 +98,13 @@ public class Post {
         this.setDescription(postForm.getDescription());
         this.setThumbnail(postForm.getThumbnail());
         this.setPrice(postForm.getPrice());
+    }
+
+    public List<Tag> getTagsAsTagList(Post post){
+        return post.getTags().stream().map(PostTag::getTag).collect(Collectors.toList());
+    }
+
+    public List<Zone> getZonesAsZoneList(Post post){
+        return getZones().stream().map(PostZone::getZone).collect(Collectors.toList());
     }
 }
