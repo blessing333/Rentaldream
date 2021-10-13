@@ -7,8 +7,6 @@
 ## :clipboard: 개발환경
 * IntelliJ
 * Postman
-* HeidiSql
-* Sourcetree
 * GitHub
 
 ## :clipboard: 성능 테스팅 도구
@@ -34,7 +32,7 @@
 * H2
 
 #### AWS
-* EC2
+* TODO
 
 #### Message Queue
 * TODO
@@ -49,10 +47,11 @@
 
 
 ## :factory: 시스템 구조
-
+ TODO
 
 ## :link: Trouble Shooting
- 
+ TODO
 ## :link: ERD 설계
-
+TODO
 ## :link: Rest API 문서
+TODO
