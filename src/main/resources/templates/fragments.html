@@ -82,8 +82,7 @@
         <div class="container">
             <div class="nav_block">
                 <a class="navbar-brand" th:href="@{/}">
-                    <img class="logo_light" src="/assets/images/logo_light.png" alt="logo">
-                    <img class="logo_dark" src="/assets/images/logo_dark.png" alt="logo">
+                    <img src="/assets/images/logo_light.png" alt="logo">
                 </a>
                 <div class="product_search_form radius_input search_form_btn">
                     <form>
@@ -227,6 +226,81 @@
         </div>
     </div>
 </footer>
+
+<div th:fragment="banner-section" class="banner_section slide_medium shop_banner_slider staggered-animation-wrap">
+    <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item background_bg active" data-img-src="https://cdn.pixabay.com/photo/2018/02/13/00/37/heart-3149536_960_720.jpg">
+                <div class="banner_slide_content banner_content_inner">
+                    <div class="container">
+                        <div class="row">
+<!--                            <div class="col-lg-7 col-10">-->
+<!--                                <div class="banner_content overflow-hidden">-->
+<!--                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="0.5s">LED 75 INCH F58</h2>-->
+<!--                                    <h5 class="mb-3 mb-sm-4 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="1s">Get up to <span class="text_default">50%</span> off Today Only!</h5>-->
+<!--                                    <a class="btn btn-fill-out staggered-animation text-uppercase" href="shop-left-sidebar.html" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item background_bg" data-img-src="https://cdn.pixabay.com/photo/2021/08/23/14/50/online-shopping-6567977_960_720.png">
+                <div class="banner_slide_content banner_content_inner">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-10">
+<!--                                <div class="banner_content overflow-hidden">-->
+<!--                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="0.5s">Smart Phones</h2>-->
+<!--                                    <h5 class="mb-3 mb-sm-4 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="1s"><span class="text_default">50%</span> off in all products</h5>-->
+<!--                                    <a class="btn btn-fill-out staggered-animation text-uppercase" href="shop-left-sidebar.html" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"><i class="ion-chevron-left"></i></a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"><i class="ion-chevron-right"></i></a>
+    </div>
+</div>
+
+<div class="row" th:fragment="post-list(postList)">
+    <div th:if="${postList.size() == 0}">
+        조건과 일치하는 상품이 없습니다.
+    </div>
+    <div class="col-4" th:unless="${postList.size() == 0}" th:each="post:${postList}">
+        <div class>
+            <div class="item">
+                <div class="product_wrap">
+                    <div class="product_img">
+                        <a th:href="@{'/post/'+${post.id}}">
+                            <img th:src="${post.thumbnail}">
+                        </a>
+                    </div>
+                    <div class="product_info">
+                        <h6 class="product_title" ><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">title</a></h6>
+                        <div class="product_price">
+                            <span class="price" th:text="${post.price}"></span><span> 원</span>
+                            <br>
+                            <span th:each="tag: ${post.tags}" class="font-weight-border text-monospace badge badge-pill badge-info mr-3">
+                                        <i class="fa fa-tag"></i> <span th:text="${tag.tag.tagName}">Tag</span>
+                                    </span>
+                            <br>
+                            <span th:each="zone: ${post.zones}" class="font-weight-bold text-monospace badge badge-primary mr-3">
+                                        <i class="fa fa-globe"></i> <span th:text="${zone.zone.localCityName}">City</span>
+                                    </span>
+                        </div>
+                        <div class="pr_desc">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div th:fragment="common-js">
     <!-- Latest jQuery -->

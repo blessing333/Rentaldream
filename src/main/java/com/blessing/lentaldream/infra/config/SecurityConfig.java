@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         UrlConfig.HOME_URL,
                         UrlConfig.SIGN_UP_URL,
                         UrlConfig.LOGIN_URL,
-                        UrlConfig.POST_URL+"/{id}"
+                        UrlConfig.POST_URL+"/{id}",
+                        UrlConfig.POST_LIST_URL
 
                 )
                 .permitAll()

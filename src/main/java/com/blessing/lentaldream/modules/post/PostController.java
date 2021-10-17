@@ -4,15 +4,19 @@ import com.blessing.lentaldream.modules.account.CurrentUser;
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.account.repository.AccountRepository;
 import com.blessing.lentaldream.modules.comment.CommentForm;
-import com.blessing.lentaldream.modules.comment.CommentService;
 import com.blessing.lentaldream.modules.post.domain.Post;
 import com.blessing.lentaldream.modules.post.form.PostForm;
+import com.blessing.lentaldream.modules.post.repository.PostRepository;
 import com.blessing.lentaldream.modules.post.validator.PostFormValidator;
 import com.blessing.lentaldream.modules.tag.TagService;
 import com.blessing.lentaldream.modules.zone.ZoneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -35,7 +39,7 @@ public class PostController {
     private final PostFormValidator postFormValidator;
     private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
-    private final CommentService commentService;
+    private final PostRepository postRepository;
 
     @InitBinder("postForm")
     public void init(WebDataBinder webDataBinder){
@@ -110,5 +114,15 @@ public class PostController {
     public String deletePost(@CurrentUser Account account, RedirectAttributes redirectAttributes, @PathVariable Long id){
         postService.deletePost(id,account);
         return REDIRECT_URL + HOME_URL;
+    }
+
+    @GetMapping(POST_LIST_URL)
+    public String createAllPostsView(Model model,
+                                     @PageableDefault(size = 9, sort = "createdDate", direction = Sort.Direction.DESC)
+            Pageable pageable){
+        //현재 페이지 번호,
+        Page<Post>  postPage = postRepository.findAll(pageable);
+        model.addAttribute("postPage",postPage);
+        return POST_LIST_VIEW;
     }
 }

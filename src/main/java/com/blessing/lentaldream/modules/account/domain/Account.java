@@ -1,16 +1,16 @@
 package com.blessing.lentaldream.modules.account.domain;
 
-import com.blessing.lentaldream.modules.account.favorite.Favorite;
 import com.blessing.lentaldream.modules.account.form.ProfileForm;
+import com.blessing.lentaldream.modules.favorite.Favorite;
 import com.blessing.lentaldream.modules.post.domain.Post;
+import com.blessing.lentaldream.modules.tag.Tag;
+import com.blessing.lentaldream.modules.zone.Zone;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -130,5 +130,13 @@ public class Account {
     }
     public void changePassword(String newPassword) {
         setPassword(newPassword);
+    }
+
+    public List<Tag> convertAccountTagsAsTagList(){
+        return getAccountTags().stream().map(AccountTag::getTag).collect(Collectors.toList());
+    }
+
+    public List<Zone> convertAccountZonesAsZoneList(){
+        return getAccountZones().stream().map(AccountZone::getZone).collect(Collectors.toList());
     }
 }

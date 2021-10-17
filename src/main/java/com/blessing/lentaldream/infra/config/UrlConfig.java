@@ -17,6 +17,7 @@ public class UrlConfig {
     public final static String POST_URL = "/post";
     public final static String POST_NEW_POST_URL = "/new-post";
     public final static String POST_EDIT_URL = "/edit-post";
+    public static final String POST_LIST_URL = "/posts";
 
     //관심상품 관련
     public static final String FAVORITE_URL = "/account/favorite";
@@ -29,7 +30,6 @@ public class UrlConfig {
     public static final String NOTIFICATION_URL = "/notifications";
     public static final String NOTIFICATION_LIST_URL = "/notifications";
     public static final String NOTIFICATION_ALL_URL = NOTIFICATION_LIST_URL + "/all";
-
 
 
 

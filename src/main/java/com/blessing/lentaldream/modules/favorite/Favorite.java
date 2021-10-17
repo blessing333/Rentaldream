@@ -1,4 +1,4 @@
-package com.blessing.lentaldream.modules.account.favorite;
+package com.blessing.lentaldream.modules.favorite;
 
 import com.blessing.lentaldream.modules.account.domain.Account;
 import com.blessing.lentaldream.modules.post.domain.Post;
