@@ -22,6 +22,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,8 @@ public class PostService {
     private final AccountRepository accountRepository;
     private final NotificationService notificationService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private static final int ITEM_COUNT_PER_PAGE = 20;
+
 
     public Long addNewPost(Account account, PostForm postForm) {
         Post newPost = Post.createNewPost(postForm.getTitle(),account,postForm.getDescription(),postForm.getThumbnail(),postForm.getPrice());
@@ -115,6 +118,22 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
+    @Transactional(readOnly = true)
+    public List<Post> loadPostMatchingWithAccountTagAndZone(Account account,int maxItemCount){
+        List<Tag> tagList = account.convertAccountTagsAsTagList();
+        List<Zone> zoneList = account.convertAccountZonesAsZoneList();
+        List<Post> result = postRepository.findPostWithTagListAndZoneList(tagList,zoneList);
+        int itemCount = Math.min(result.size(), maxItemCount);
+        return new ArrayList<>(result.subList(0, itemCount));
+    }
+
+    public List<Post> loadPostMatchingWithAccountZone(Account account, int maxItemCount) {
+        List<Zone> zoneList = account.convertAccountZonesAsZoneList();
+        List<Post> result = postRepository.findPostWithZoneList(zoneList);
+        int itemCount = Math.min(result.size(), maxItemCount);
+        return new ArrayList<>(result.subList(0, itemCount));
+    }
+
     private void sendWebNotification(Post post){
         List<Tag> tagList = post.getTagsAsTagList(post);
         List<Zone> zoneList = post.getZonesAsZoneList(post);
@@ -123,6 +142,7 @@ public class PostService {
             notificationService.createNotification(post, account, NotificationType.ITEM_UPDATED);
         });
     }
+
 
 
 }

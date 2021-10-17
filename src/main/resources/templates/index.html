@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
+
 <head th:replace="fragments.html::head"></head>
 
 <body>
@@ -13,209 +16,108 @@
 <header th:replace="fragments.html::header"></header>
 <!-- END HEADER -->
 
-<!-- START SECTION BANNER -->
-<!--<div class="banner_section slide_medium shop_banner_slider staggered-animation-wrap">-->
-<!--    <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow" data-ride="carousel">-->
-<!--        <div class="carousel-inner">-->
-<!--            <div class="carousel-item background_bg active" data-img-src="/assets/images/banner16.jpg">-->
-<!--                <div class="banner_slide_content banner_content_inner">-->
-<!--                	<div class="container">-->
-<!--                    	<div class="row">-->
-<!--                            <div class="col-lg-7 col-10">-->
-<!--                                <div class="banner_content overflow-hidden">-->
-<!--                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="0.5s">LED 75 INCH F58</h2>-->
-<!--                                    <h5 class="mb-3 mb-sm-4 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="1s">Get up to <span class="text_default">50%</span> off Today Only!</h5>-->
-<!--                                    <a class="btn btn-fill-out staggered-animation text-uppercase" href="shop-left-sidebar.html" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                    	</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="carousel-item background_bg" data-img-src="/assets/images/banner17.jpg">-->
-<!--                <div class="banner_slide_content banner_content_inner">-->
-<!--                	<div class="container">-->
-<!--                    	<div class="row">-->
-<!--                    		<div class="col-lg-8 col-10">-->
-<!--                                <div class="banner_content overflow-hidden">-->
-<!--                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="0.5s">Smart Phones</h2>-->
-<!--                                    <h5 class="mb-3 mb-sm-4 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="1s"><span class="text_default">50%</span> off in all products</h5>-->
-<!--                                    <a class="btn btn-fill-out staggered-animation text-uppercase" href="shop-left-sidebar.html" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                    	</div>	-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="carousel-item background_bg" data-img-src="/assets/images/banner18.jpg">-->
-<!--                <div class="banner_slide_content banner_content_inner">-->
-<!--                	<div class="container">-->
-<!--                    	<div class="row">-->
-<!--                    		<div class="col-lg-8 col-10">-->
-<!--                                <div class="banner_content overflow-hidden">-->
-<!--                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="0.5s">Beat Headphone</h2>-->
-<!--                                    <h5 class="mb-3 mb-sm-4 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="1s">Taking your Viewing Experience to Next Level</h5>-->
-<!--                                    <a class="btn btn-fill-out staggered-animation text-uppercase" href="shop-left-sidebar.html" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                    	</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"><i class="ion-chevron-left"></i></a>-->
-<!--        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"><i class="ion-chevron-right"></i></a>-->
-<!--    </div>-->
-<!--</div>-->
-<!-- END SECTION BANNER -->
+<!-- START SECTION BANNER-->
+<div th:replace="fragments.html::banner-section"></div>
+<!-- END SECTION BANNER-->
 
-<!-- END MAIN CONTENT -->
+<!-- START MAIN CONTENT -->
 <div class="main_content">
 
 <!-- START SECTION SHOP -->
 <div class="section small_pt">
 	<div class="container">
-    	<div class="row justify-content-center">
+    	<div class="row justify-content-flex-start">
 			<div class="col-md-6">
-            	<div class="heading_s1 text-center">
-                	<h2>새로 등록된 물품</h2>
+            	<div class="heading_s1">
+                	<h2 class="text-left">새로 등록된 물품</h2>
                     <div class="view_all">
-                        <a href="#" class="text_default"><span>View All</span></a>
+                        <a th:href="@{/posts}" class="text_default"><span>View All</span></a>
                     </div>
                 </div>
             </div>
 		</div>
-        <div class="row">
-            <div class="col-4" th:each="post:${postList}">
-                <div class>
-                    <div class="item">
-                        <div class="product_wrap">
-                            <div class="product_img">
-                                <a th:href="@{'/post/'+${post.id}}">
-                                    <img th:src="${post.thumbnail}">
-                                </a>
-                            </div>
-                            <div class="product_info">
-                                <h6 class="product_title" ><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">title</a></h6>
-                                <div class="product_price">
-                                    <span class="price" th:text="${post.price}"></span><span> 원</span>
-                                    <br>
-                                    <span th:each="tag: ${post.tags}" class="font-weight-border text-monospace badge badge-pill badge-info mr-3">
-                                        <i class="fa fa-tag"></i> <span th:text="${tag.tag.tagName}">Tag</span>
-                                    </span>
-                                    <br>
-                                    <span th:each="zone: ${post.zones}" class="font-weight-bold text-monospace badge badge-primary mr-3">
-                                        <i class="fa fa-globe"></i> <span th:text="${zone.zone.localCityName}">City</span>
-                                    </span>
-                                </div>
-                                <div class="pr_desc">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <div th:replace="fragments.html::post-list(${postList})"></div>
     </div>
 </div>
 
-    <div class="section small_pt">
+
+    <!-- START SECTION LOGIN REQUIRE -->
+    <div class="section bg_redon" sec:authorize="!isAuthenticated()">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="heading_s1 text-center">
-                        <h2>내 지역에 등록된 게시물</h2>
-                        <div class="view_all">
-                            <a href="#" class="text_default"><span>View All</span></a>
-                        </div>
+                        <h2>로그인 후 더 다양한 서비스를 이용하세요!</h2>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class>
-                        <div class="item">
-                            <div class="product_wrap">
-                                <div class="product_img">
-                                    <a href="shop-product-detail.html">
-                                        <img src="/assets/images/el_img2.jpg" alt="el_img2">
-                                    </a>
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="testimonial_wrap testimonial_style1 carousel_slider owl-carousel owl-theme nav_style2" data-nav="true" data-dots="false" data-center="true" data-loop="true" data-autoplay="true" data-items='1'>
+                        <div class="testimonial_box">
+                            <div class="testimonial_desc">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet animi blanditiis consequatur debitis dicta distinctio, enim error eum iste libero modi nam natus perferendis possimus quasi sint sit tempora voluptatem.</p>
+                            </div>
+                            <div class="author_wrap">
+                                <div class="author_img">
+                                    <img src="assets/images/user_img1.jpg" alt="user_img1" />
                                 </div>
-                                <div class="product_info">
-                                    <h6 class="product_title"><a href="shop-product-detail.html">Smart Watch External</a></h6>
-                                    <div class="product_price">
-                                        <span class="price">$55.00</span>
-                                        <br>
-                                        <span>경기도 성남시 분당구</span>
-                                    </div>
-                                    <div class="rating_wrap">
-                                        <div class="rating">
-                                            <div class="product_rate" style="width:68%"></div>
-                                        </div>
-                                        <span class="rating_num">(15)</span>
-                                    </div>
-                                    <div class="pr_desc">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>
-                                    </div>
+                                <div class="author_name">
+                                    <h6>Lissa Castro</h6>
+                                    <span>Designer</span>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="testimonial_box">
+                            <div class="testimonial_desc">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet animi blanditiis consequatur debitis dicta distinctio, enim error eum iste libero modi nam natus perferendis possimus quasi sint sit tempora voluptatem.</p>
+                            </div>
+                            <div class="author_wrap">
+                                <div class="author_img">
+                                    <img src="assets/images/user_img2.jpg" alt="user_img2" />
+                                </div>
+                                <div class="author_name">
+                                    <h6>Alden Smith</h6>
+                                    <span>Designer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial_box">
+                            <div class="testimonial_desc">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet animi blanditiis consequatur debitis dicta distinctio, enim error eum iste libero modi nam natus perferendis possimus quasi sint sit tempora voluptatem.</p>
+                            </div>
+                            <div class="author_wrap">
+                                <div class="author_img">
+                                    <img src="assets/images/user_img3.jpg" alt="user_img3" />
+                                </div>
+                                <div class="author_name">
+                                    <h6>Daisy Lana</h6>
+                                    <span>Designer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial_box">
+                            <div class="testimonial_desc">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet animi blanditiis consequatur debitis dicta distinctio, enim error eum iste libero modi nam natus perferendis possimus quasi sint sit tempora voluptatem.</p>
+                            </div>
+                            <div class="author_wrap">
+                                <div class="author_img">
+                                    <img src="assets/images/user_img4.jpg" alt="user_img4" />
+                                </div>
+                                <div class="author_name">
+                                    <h6>John Becker</h6>
+                                    <span>Designer</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- END SECTION LOGIN REQUIRE -->
 
-    <div class="section small_pt">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="heading_s1 text-center">
-                        <h2>내 관심 물품</h2>
-                        <div class="view_all">
-                            <a href="#" class="text_default"><span>View All</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class>
-                        <div class="item">
-                            <div class="product_wrap">
-                                <div class="product_img">
-                                    <a href="shop-product-detail.html">
-                                        <img src="/assets/images/el_img2.jpg" alt="el_img2">
-                                    </a>
-                                </div>
-                                <div class="product_info">
-                                    <h6 class="product_title"><a href="shop-product-detail.html">Smart Watch External</a></h6>
-                                    <div class="product_price">
-                                        <span class="price">$55.00</span>
-                                        <br>
-                                        <span>경기도 성남시 분당구</span>
-                                    </div>
-                                    <div class="rating_wrap">
-                                        <div class="rating">
-                                            <div class="product_rate" style="width:68%"></div>
-                                        </div>
-                                        <span class="rating_num">(15)</span>
-                                    </div>
-                                    <div class="pr_desc">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit massa enim. Nullam id varius nunc id varius nunc.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 <!-- END MAIN CONTENT -->

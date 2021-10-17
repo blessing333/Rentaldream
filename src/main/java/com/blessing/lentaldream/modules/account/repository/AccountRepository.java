@@ -5,12 +5,11 @@ import com.blessing.lentaldream.modules.tag.Tag;
 import com.blessing.lentaldream.modules.zone.Zone;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AccountRepository extends JpaRepository<Account,Long>, QuerydslPredicateExecutor<Account> {
+public interface AccountRepository extends JpaRepository<Account,Long>{
     boolean existsByEmail(String email);
     boolean existsByNickname(String nickname);
     Account findByEmail(String email);
