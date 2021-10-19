@@ -2,7 +2,6 @@ package com.blessing.lentaldream.modules.comment;
 
 import com.blessing.lentaldream.modules.account.CurrentUser;
 import com.blessing.lentaldream.modules.account.domain.Account;
-import com.blessing.lentaldream.modules.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import static com.blessing.lentaldream.infra.config.UrlConfig.*;
 @Controller
 @RequiredArgsConstructor
 public class CommentController {
-    private final AccountService accountService;
     private final CommentService commentService;
     private final CommentFormValidator commentFormValidator;
     @InitBinder("commentForm")

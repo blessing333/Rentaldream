@@ -91,7 +91,6 @@ class PostControllerTest {
             .param("zonesWithJsonString",zoneJsonString)
             .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(POST_NEW_POST_URL))
                 .andExpect(model().hasNoErrors());
 
         Post foundedPost = postRepository.findByDescription(postForm.getDescription());
