@@ -45,6 +45,13 @@ dependencies {
 }
 def preinstalledNodeDistributionDirectory = file("${projectDir}/src/main/resources/static/node")
 apply plugin: 'org.siouan.frontend-jdk11'
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
 frontend {
     nodeDistributionProvided = false
     nodeInstallDirectory = file("${projectDir}/src/main/resources/static/node")
