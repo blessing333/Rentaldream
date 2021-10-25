@@ -51,7 +51,7 @@ bootJar {
 jar {
     enabled = true
     manifest {
-        attributes 'com.blessing.rentaldream.RentaldreamApplication'
+        attributes 'Main-Class': 'com.blessing.rentaldream.RentaldreamApplication'
     }
 }
 
