@@ -46,12 +46,12 @@ dependencies {
 def preinstalledNodeDistributionDirectory = file("${projectDir}/src/main/resources/static/node")
 apply plugin: 'org.siouan.frontend-jdk11'
 bootJar {
-    mainClass = 'com.blessing.rentaldream'
+    mainClass = 'com.blessing.rentaldream.RentaldreamApplication'
 }
 jar {
     enabled = true
     manifest {
-        attributes 'Main-Class': 'com.blessing.rentaldream'
+        attributes 'com.blessing.rentaldream.RentaldreamApplication'
     }
 }
 
