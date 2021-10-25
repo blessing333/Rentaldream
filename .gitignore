@@ -40,4 +40,7 @@ out/
 src/main/resources/static/node_modules src/main/resources/static/node
 
 ### resources/ ###
-src/main/resources/**
+src/main/resources/static/images
+src/main/resources/static/db
+src/main/resources/static/templates
+src/main/resources/static/application.yml
