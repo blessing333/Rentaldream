@@ -4,12 +4,12 @@ jdk:
 branches:
   only:
     - master
-#
-#cache:
-#  directories:
-#    - '$HOME/.m2/repository'
-#    - '$HOME/.gradle'
-#script: "./gradlew clean build"
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+script: "./gradlew clean build"
 notifications:
   email:
     recipients: 'blessing_333@naver.com'
