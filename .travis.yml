@@ -8,6 +8,7 @@ git:
   submodules: false
 before_install:
   - echo -e "\n\nmachine api.github.com\nlogin blessing333\npassword $CI_USER_TOKEN\n" > ~/.netrc
+  - curl -n https://api.github.com/user
   - git submodule update --init --recursive
 cache:
   directories:
