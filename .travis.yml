@@ -19,14 +19,14 @@ before_install:
 script: "./gradlew clean build"
 
 before_deploy:
-  - zip -r Rentaldream
+  - zip -r Rentaldream *
   - mkdir -p deploy
   - mv Rentaldream.zip deploy/Rentaldream.zip
 deploy:
   - provider: s3
-    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설 정된 값
-    secret_access_key: $AWS_SECRET_KEY # Travis repo settings
-    bucket: freelec-springboot-build # S3 버킷 region: ap-northeast-2
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: rentaldream-build # S3 버킷
     skip_cleanup: true
     cl: private # zip 파일 접근을 private으로
     local_dir: deploy # before_deploy에서 생성한 디렉토리 6 wait-until-deployed: true
