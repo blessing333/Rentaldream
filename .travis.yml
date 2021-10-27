@@ -22,7 +22,6 @@ before_deploy:
   - zip -r Rentaldream *
   - mkdir -p deploy
   - mv Rentaldream.zip deploy/Rentaldream.zip
-  -
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY
