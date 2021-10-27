@@ -6,6 +6,7 @@ branches:
     - master
 git:
   submodules: false
+  e
 before_install:
   - echo -e "\n\nmachine api.github.com\nlogin blessing333\npassword $CI_USER_TOKEN\n" > ~/.netrc
   - git submodule update --init --recursive
