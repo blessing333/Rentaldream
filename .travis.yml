@@ -37,7 +37,8 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY # Travis repo settings
     bucket: rentaldream-build # S3 버킷
-    key: Rentaldream.zip # 빌드 파일을 압축해서 전달 bundle_type: zip
+    key: Rentaldream.zip # 빌드 파일을 압축해서 전달
+    bundle_type: zip
     application: Rentaldream # 웹 콘솔에서 등록
     deployment_group: Rentaldream-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
     region: ap-northeast-2
