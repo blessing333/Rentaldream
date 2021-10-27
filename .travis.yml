@@ -7,9 +7,29 @@ branches:
 git:
   submodules: false
 
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+    -
 before_install:
   - wget -q -O - https://raw.githubusercontent.com/mlocati/travisci-github-deploy-key/master/load-deploy-key.sh | sh
   - git submodule update --init --recursive
+
+script: "gradlew clean build"
+
+before_deploy:
+  - zip -r Rentaldream
+  - mkdir -p deploy
+  - mv Rentaldream.zip deploy/Rentaldream.zip
+  deploy: 5
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설 정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings
+    bucket: freelec-springboot-build # S3 버킷 region: ap-northeast-2
+    skip_cleanup: true
+    cl: private # zip 파일 접근을 private으로
+    local_dir: deploy # before_deploy에서 생성한 디렉토리 6 wait-until-deployed: true
 
 notifications:
   email:
