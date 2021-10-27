@@ -16,7 +16,7 @@ before_install:
   - wget -q -O - https://raw.githubusercontent.com/mlocati/travisci-github-deploy-key/master/load-deploy-key.sh | sh
   - git submodule update --init --recursive
 
-script: "gradlew clean build"
+script: "./gradlew clean build"
 
 before_deploy:
   - zip -r Rentaldream
