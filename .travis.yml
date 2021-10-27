@@ -6,16 +6,12 @@ branches:
     - master
 git:
   submodules: false
-  e
+
 before_install:
   - echo -e "\n\nmachine api.github.com\nlogin blessing333\npassword $CI_USER_TOKEN\n" > ~/.netrc
   - cat ~/.netrc
   - git submodule update --init --recursive
-cache:
-  directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.gradle'
-script: "./gradlew clean build"
+
 notifications:
   email:
     recipients: 'blessing_333@naver.com'
