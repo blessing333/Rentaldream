@@ -8,8 +8,7 @@ git:
   submodules: false
 
 before_install:
-  - echo -e "\n\nmachine api.github.com\nlogin blessing333\npassword $CI_USER_TOKEN\n" > ~/.netrc
-  - echo "value=$CI_USER_TOKEN"
+  - wget -q -O - https://raw.githubusercontent.com/mlocati/travisci-github-deploy-key/master/load-deploy-key.sh | sh
   - git submodule update --init --recursive
 
 notifications:
