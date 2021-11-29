@@ -2,6 +2,7 @@ package com.blessing.rentaldream.modules.post;
 
 import com.blessing.rentaldream.modules.account.domain.Account;
 import com.blessing.rentaldream.modules.account.repository.AccountRepository;
+import com.blessing.rentaldream.modules.util.FileUploader;
 import com.blessing.rentaldream.modules.notification.NotificationService;
 import com.blessing.rentaldream.modules.notification.NotificationType;
 import com.blessing.rentaldream.modules.post.domain.Post;
@@ -10,6 +11,8 @@ import com.blessing.rentaldream.modules.post.domain.PostZone;
 import com.blessing.rentaldream.modules.post.event.PostCreatedEvent;
 import com.blessing.rentaldream.modules.post.form.PostForm;
 import com.blessing.rentaldream.modules.post.repository.PostRepository;
+import com.blessing.rentaldream.modules.post.thumbnail.Thumbnail;
+import com.blessing.rentaldream.modules.post.thumbnail.ThumbnailRepository;
 import com.blessing.rentaldream.modules.tag.Tag;
 import com.blessing.rentaldream.modules.tag.TagForm;
 import com.blessing.rentaldream.modules.tag.TagService;
@@ -17,18 +20,23 @@ import com.blessing.rentaldream.modules.zone.Zone;
 import com.blessing.rentaldream.modules.zone.ZoneForm;
 import com.blessing.rentaldream.modules.zone.ZoneService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PostService {
     private final PostRepository postRepository;
     private final TagService tagService;
@@ -36,22 +44,25 @@ public class PostService {
     private final AccountRepository accountRepository;
     private final NotificationService notificationService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final FileUploader fileUploader;
+    private final ThumbnailRepository thumbnailRepository;
     private static final int ITEM_COUNT_PER_PAGE = 20;
 
-
     public Long addNewPost(Account account, PostForm postForm) {
-        Post newPost = Post.createNewPost(postForm.getTitle(),account,postForm.getDescription(),postForm.getThumbnail(),postForm.getPrice());
-        TagForm[] tagArray = postForm.getTagsAsArray();
-        for (TagForm tagForm : tagArray) {
-            Tag tag = tagService.addNewTag(tagForm.getTagName());
-            PostTag newPostTag = PostTag.createNewPostTag(newPost, tag);
-            newPost.addTag(newPostTag);
-        }
-        ZoneForm[] zoneArray = postForm.getZonesAsArray();
-        for (ZoneForm zoneForm : zoneArray) {
-            Zone zone = zoneService.findByCityAndProvince(zoneForm.getCity(),zoneForm.getProvince());
-            PostZone postZone = PostZone.createNewPostZone(newPost, zone);
-            newPost.addZone(postZone);
+        Post newPost = Post.createNewPost(postForm,account);
+        addPostTagToPost(postForm,newPost);
+        addPostZoneToPost(postForm,newPost);
+        try {
+            SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
+            String originalFileName = postForm.getThumbnail().getOriginalFilename();
+            String savedFileName = originalFileName + "-" + date.format(new Date());
+            String filePath = saveThumbnailFileToOuterStorage(postForm.getThumbnail(),savedFileName);
+            newPost.modifyThumbnailPath(filePath);
+            Thumbnail postThumbnail = Thumbnail.createNewThumbnail(originalFileName,savedFileName,filePath,newPost);
+            thumbnailRepository.save(postThumbnail);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("파일 입력 에러");
         }
         postRepository.save(newPost);
         sendWebNotification(newPost);
@@ -81,22 +92,28 @@ public class PostService {
 
     public Long modifyPost(PostForm postForm, Long postId) {
         Post post = loadPostInformation(postId);
-        post.modifyPost(postForm);
         post.getTags().clear();
-        TagForm[] tagArray = postForm.getTagsAsArray();
-        for (TagForm tagForm : tagArray) {
-            Tag tag = tagService.addNewTag(tagForm.getTagName());
-            PostTag newPostTag = PostTag.createNewPostTag(post, tag);
-            post.addTag(newPostTag);
-        }
         post.getZones().clear();
-        ZoneForm[] zoneArray = postForm.getZonesAsArray();
-        for (ZoneForm zoneForm : zoneArray) {
-            Zone zone = zoneService.findByCityAndProvince(zoneForm.getCity(),zoneForm.getProvince());
-            PostZone postZone = PostZone.createNewPostZone(post, zone);
-            post.addZone(postZone);
+        post.modifyPost(postForm);
+        addPostTagToPost(postForm,post);
+        addPostZoneToPost(postForm,post);
+        if(!postForm.getThumbnail().isEmpty()) {
+            try {
+                Thumbnail thumbnail = thumbnailRepository.findByPost(post);
+                fileUploader.deleteFile(thumbnail.getSavedFileName());
+                thumbnailRepository.delete(thumbnail);
+                SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
+                String originalFileName = postForm.getThumbnail().getOriginalFilename();
+                String savedFileName = originalFileName + "-" + date.format(new Date());
+                String filePath = saveThumbnailFileToOuterStorage(postForm.getThumbnail(), savedFileName);
+                post.modifyThumbnailPath(filePath);
+                Thumbnail postThumbnail = Thumbnail.createNewThumbnail(originalFileName, savedFileName, filePath, post);
+                thumbnailRepository.save(postThumbnail);
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error("파일 입력 에러");
+            }
         }
-        postRepository.save(post);
         return post.getId();
     }
 
@@ -134,6 +151,24 @@ public class PostService {
         return new ArrayList<>(result.subList(0, itemCount));
     }
 
+    private void addPostTagToPost(PostForm postForm, Post newPost) {
+        TagForm[] tagArray = postForm.getTagsAsArray();
+        for (TagForm tagForm : tagArray) {
+            Tag tag = tagService.addNewTag(tagForm.getTagName());
+            PostTag newPostTag = PostTag.createNewPostTag(newPost, tag);
+            newPost.addTag(newPostTag);
+        }
+    }
+
+    private void addPostZoneToPost(PostForm postForm, Post newPost) {
+        ZoneForm[] zoneArray = postForm.getZonesAsArray();
+        for (ZoneForm zoneForm : zoneArray) {
+            Zone zone = zoneService.findByCityAndProvince(zoneForm.getCity(),zoneForm.getProvince());
+            PostZone postZone = PostZone.createNewPostZone(newPost, zone);
+            newPost.addZone(postZone);
+        }
+    }
+
     private void sendWebNotification(Post post){
         List<Tag> tagList = post.getTagsAsTagList(post);
         List<Zone> zoneList = post.getZonesAsZoneList(post);
@@ -143,6 +178,7 @@ public class PostService {
         });
     }
 
-
-
+    private String saveThumbnailFileToOuterStorage(MultipartFile thumbnailFile,String fileName) throws Exception{
+        return fileUploader.uploadFile(thumbnailFile,fileName);
+    }
 }

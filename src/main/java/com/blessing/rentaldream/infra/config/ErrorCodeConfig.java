@@ -13,4 +13,5 @@ public class ErrorCodeConfig {
 
     // 게시글 등록 관련 에러코드
     public final static String MAX_OUT_TAG_COUNT = "wrong.tagCount";
+    public final static String NO_THUMBNAIL = "wrong.thumbnail";
 }

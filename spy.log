@@ -1,0 +1,26 @@
+1634829265625|7|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists account CASCADE |drop table if exists account CASCADE 
+1634829265626|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists account_tag CASCADE |drop table if exists account_tag CASCADE 
+1634829265626|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists account_zone CASCADE |drop table if exists account_zone CASCADE 
+1634829265627|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists comment CASCADE |drop table if exists comment CASCADE 
+1634829265627|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists favorite CASCADE |drop table if exists favorite CASCADE 
+1634829265627|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists notification CASCADE |drop table if exists notification CASCADE 
+1634829265628|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists persistent_logins CASCADE |drop table if exists persistent_logins CASCADE 
+1634829265628|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists post CASCADE |drop table if exists post CASCADE 
+1634829265628|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists post_tag CASCADE |drop table if exists post_tag CASCADE 
+1634829265629|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists post_zone CASCADE |drop table if exists post_zone CASCADE 
+1634829265629|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists tag CASCADE |drop table if exists tag CASCADE 
+1634829265629|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop table if exists zone CASCADE |drop table if exists zone CASCADE 
+1634829265630|0|statement|connection 55|url jdbc:h2:mem:ac5f5e12-2eed-42f5-8c3f-0cf285d3c727|drop sequence if exists hibernate_sequence|drop sequence if exists hibernate_sequence
+1634829777319|5|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists account CASCADE |drop table if exists account CASCADE 
+1634829777320|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists account_tag CASCADE |drop table if exists account_tag CASCADE 
+1634829777321|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists account_zone CASCADE |drop table if exists account_zone CASCADE 
+1634829777321|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists comment CASCADE |drop table if exists comment CASCADE 
+1634829777321|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists favorite CASCADE |drop table if exists favorite CASCADE 
+1634829777322|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists notification CASCADE |drop table if exists notification CASCADE 
+1634829777322|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists persistent_logins CASCADE |drop table if exists persistent_logins CASCADE 
+1634829777322|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists post CASCADE |drop table if exists post CASCADE 
+1634829777323|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists post_tag CASCADE |drop table if exists post_tag CASCADE 
+1634829777323|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists post_zone CASCADE |drop table if exists post_zone CASCADE 
+1634829777323|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists tag CASCADE |drop table if exists tag CASCADE 
+1634829777323|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop table if exists zone CASCADE |drop table if exists zone CASCADE 
+1634829777324|0|statement|connection 56|url jdbc:h2:mem:cdf9b212-1376-47be-a0a0-3af2367d3811|drop sequence if exists hibernate_sequence|drop sequence if exists hibernate_sequence

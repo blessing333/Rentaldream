@@ -71,7 +71,7 @@ public class AccountService implements UserDetailsService {
             postForm.setTitle("test1");
             postForm.setDescription("discr");
             postForm.setPrice(1000);
-            postForm.setThumbnail(TestImageSource.imageSource);
+            //postForm.(TestImageSource.imageSource);
             postForm.setTagsWithJsonString("[{\"tagName\":\"모티\"},{\"tagName\":\"모티모티\"},{\"tagName\":\"기모티\"}]");
             postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
             Account account = accountRepository.findByEmail("blessing_333@naver.com");

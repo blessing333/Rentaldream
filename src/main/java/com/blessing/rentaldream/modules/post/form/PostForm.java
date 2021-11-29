@@ -5,6 +5,7 @@ import com.blessing.rentaldream.modules.zone.ZoneForm;
 import com.google.gson.Gson;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,13 +16,13 @@ public class PostForm {
     @Length(min = 1,max = 20)
     private String title;
 
-    @NotBlank
-    private String thumbnail;
+    private MultipartFile thumbnail;
+
+    private String thumbnailPath;
 
     @NotBlank
     private String description;
 
-    @NotNull
     private Integer price;
 
     private String tagsWithJsonString;

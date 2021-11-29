@@ -2,6 +2,7 @@ package com.blessing.rentaldream.modules.main;
 
 import com.blessing.rentaldream.modules.account.CurrentUser;
 import com.blessing.rentaldream.modules.account.domain.Account;
+import com.blessing.rentaldream.modules.account.domain.AnonymousAccount;
 import com.blessing.rentaldream.modules.account.repository.AccountRepository;
 import com.blessing.rentaldream.modules.post.PostService;
 import com.blessing.rentaldream.modules.post.domain.Post;
@@ -41,6 +42,9 @@ public class MainController {
             List<Post> matchedPostsWithZone =  postService.loadPostMatchingWithAccountZone(account,MAX_ITEM_COUNT);
             model.addAttribute("matchedPostsWithZone",matchedPostsWithZone);
             return "after-login-index";
+        }
+        else{
+            model.addAttribute("account",new AnonymousAccount());
         }
         return "index";
     }

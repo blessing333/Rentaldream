@@ -25,6 +25,10 @@ public class PostFormValidator implements Validator {
         if(tagArray!= null && tagArray.length > MAXIMUM_TAG_COUNT){
             errors.rejectValue("tagsWithJsonString", ErrorCodeConfig.MAX_OUT_TAG_COUNT);
         }
+
+        if(postForm.getThumbnailPath() == null && postForm.getThumbnail() == null){
+            errors.rejectValue("thumbnail", ErrorCodeConfig.NO_THUMBNAIL);
+        }
     }
 
 

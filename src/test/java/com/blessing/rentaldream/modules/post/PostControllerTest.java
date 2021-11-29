@@ -76,7 +76,7 @@ class PostControllerTest {
         String zoneJsonString = objectMapper.writeValueAsString(zoneArr);
 
         postForm.setDescription("상품설명");
-        postForm.setThumbnail("이미지");
+        //postForm.setThumbnail("이미지");
         postForm.setPrice(120000);
         postForm.setTitle("제목");
         postForm.setTagsWithJsonString(tagJsonString);
@@ -84,7 +84,7 @@ class PostControllerTest {
 
         mockMvc.perform(post(POST_NEW_POST_URL)
             .param("title",postForm.getTitle())
-            .param("thumbnail",postForm.getThumbnail())
+          //  .param("thumbnail",postForm.getThumbnail())
             .param("price","120000")
             .param("description",postForm.getDescription())
             .param("tagsWithJsonString",tagJsonString)
@@ -129,7 +129,7 @@ class PostControllerTest {
         String zoneJsonString = objectMapper.writeValueAsString(zoneArr);
 
         postForm.setDescription("상품설명");
-        postForm.setThumbnail("이미지");
+//        postForm.setThumbnail("이미지");
         postForm.setPrice(120000);
         postForm.setTitle("제목");
         postForm.setTagsWithJsonString(tagJsonString);
@@ -168,7 +168,7 @@ class PostControllerTest {
         String zoneJsonString = objectMapper.writeValueAsString(zoneArr);
 
         postForm.setDescription("상품설명");
-        postForm.setThumbnail("이미지");
+//        postForm.setThumbnail("이미지");
         postForm.setPrice(120000);
         postForm.setTitle("제목");
         postForm.setTagsWithJsonString(tagJsonString);
@@ -176,7 +176,7 @@ class PostControllerTest {
 
         mockMvc.perform(post(POST_NEW_POST_URL)
                 .param("title",postForm.getTitle())
-                .param("thumbnail",postForm.getThumbnail())
+//                .param("thumbnail",postForm.getThumbnail())
                 .param("price","120000")
                 .param("description",postForm.getDescription())
                 .param("tagsWithJsonString",tagJsonString)

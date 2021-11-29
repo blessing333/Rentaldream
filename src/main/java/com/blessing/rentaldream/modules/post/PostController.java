@@ -12,6 +12,7 @@ import com.blessing.rentaldream.modules.tag.TagService;
 import com.blessing.rentaldream.modules.zone.ZoneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +27,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 import static com.blessing.rentaldream.infra.config.UrlConfig.*;
 import static com.blessing.rentaldream.infra.config.ViewNameConfig.*;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
     private final TagService tagService;
     private final ZoneService zoneService;
@@ -86,7 +89,11 @@ public class PostController {
     @GetMapping(POST_EDIT_URL+"/{id}")
     public String createPostModifyView(@CurrentUser Account account, Model model, @PathVariable Long id) throws JsonProcessingException {
         Post post = postService.loadPostInformationForModify(id,account);
-        PostForm postForm = modelMapper.map(post,PostForm.class);
+        PostForm postForm = new PostForm();
+        postForm.setDescription(post.getDescription());
+        postForm.setPrice(post.getPrice());
+        postForm.setThumbnailPath(post.getThumbnail());
+        postForm.setTitle(post.getTitle());
         model.addAttribute(postForm);
         String tagListJson = tagService.findAllTagAsJsonString();
         model.addAttribute("recommendTagList",tagListJson);
@@ -103,6 +110,7 @@ public class PostController {
     @PostMapping(POST_EDIT_URL+"/{id}")
     public String modifyPost(@CurrentUser Account account, @Valid @ModelAttribute PostForm postForm, Errors errors, Model model, RedirectAttributes redirectAttributes,@PathVariable Long id){
         if(errors.hasErrors()){
+            log.error(Objects.requireNonNull(errors.getFieldError()).toString());
             return POST_EDIT_VIEW;
         }
         Long postId = postService.modifyPost(postForm,id);

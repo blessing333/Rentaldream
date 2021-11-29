@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         staticResourcePath.add("/assets/**");
         staticResourcePath.add("/resources/**");
         staticResourcePath.add("/error");
+
         registry.addInterceptor(notificationInterceptor)
                 .excludePathPatterns(staticResourcePath);
 

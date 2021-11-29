@@ -6,10 +6,7 @@ import com.blessing.rentaldream.modules.comment.Comment;
 import com.blessing.rentaldream.modules.post.form.PostForm;
 import com.blessing.rentaldream.modules.tag.Tag;
 import com.blessing.rentaldream.modules.zone.Zone;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +30,6 @@ public class Post {
 
     private String title;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
     private String thumbnail;
 
     @Lob @Basic(fetch = FetchType.EAGER)
@@ -56,14 +52,13 @@ public class Post {
     private int viewCount = 0;
     private int favoriteCount = 0;
 
-    public static Post createNewPost(String title, Account account,String description, String thumbnail, int price) {
+    public static Post createNewPost(PostForm postForm,Account account) {
         Post instance = new Post();
-        instance.setTitle(title);
+        instance.setTitle(postForm.getTitle());
         instance.setCreatedBy(account);
-        instance.setDescription(description);
-        instance.setThumbnail(thumbnail);
+        instance.setDescription(postForm.getDescription());
         instance.setCreatedDate(LocalDateTime.now());
-        instance.setPrice(price);
+        instance.setPrice(postForm.getPrice());
         instance.setPostStatus(PostStatus.AVAILABLE);
         return instance;
     }
@@ -96,8 +91,11 @@ public class Post {
     public void modifyPost(PostForm postForm) {
         this.setTitle(postForm.getTitle());
         this.setDescription(postForm.getDescription());
-        this.setThumbnail(postForm.getThumbnail());
         this.setPrice(postForm.getPrice());
+    }
+
+    public void modifyThumbnailPath(String thumbnailPath){
+        this.setThumbnail(thumbnailPath);
     }
 
     public List<Tag> getTagsAsTagList(Post post){
