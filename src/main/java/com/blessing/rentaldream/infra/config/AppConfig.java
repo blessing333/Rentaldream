@@ -22,12 +22,4 @@ public class AppConfig {
                 .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
         return modelMapper;
     }
-
-//    @Bean("errorCode")
-//    public PropertiesFactoryBean propertiesFactoryBean() throws  Exception{
-//        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-//        ClassPathResource classPathResource = new ClassPathResource("messages.properties");
-//        propertiesFactoryBean.setLocation(classPathResource);
-//        return propertiesFactoryBean;
-//    }
 }

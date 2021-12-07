@@ -1,8 +1,6 @@
 package com.blessing.rentaldream.modules.main;
-
 import com.blessing.rentaldream.modules.account.CurrentUser;
 import com.blessing.rentaldream.modules.account.domain.Account;
-import com.blessing.rentaldream.modules.account.domain.AnonymousAccount;
 import com.blessing.rentaldream.modules.account.repository.AccountRepository;
 import com.blessing.rentaldream.modules.post.PostService;
 import com.blessing.rentaldream.modules.post.domain.Post;
@@ -14,9 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import java.util.List;
-
 import static com.blessing.rentaldream.infra.config.UrlConfig.HOME_URL;
 import static com.blessing.rentaldream.infra.config.UrlConfig.LOGIN_URL;
 import static com.blessing.rentaldream.infra.config.ViewNameConfig.LOGIN_VIEW;
@@ -42,9 +38,6 @@ public class MainController {
             List<Post> matchedPostsWithZone =  postService.loadPostMatchingWithAccountZone(account,MAX_ITEM_COUNT);
             model.addAttribute("matchedPostsWithZone",matchedPostsWithZone);
             return "after-login-index";
-        }
-        else{
-            model.addAttribute("account",new AnonymousAccount());
         }
         return "index";
     }

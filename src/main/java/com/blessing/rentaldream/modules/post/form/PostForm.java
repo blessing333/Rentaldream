@@ -15,16 +15,12 @@ public class PostForm {
     @NotBlank
     @Length(min = 1,max = 20)
     private String title;
-
     private MultipartFile thumbnail;
-
     private String thumbnailPath;
-
     @NotBlank
     private String description;
-
+    @NotNull
     private Integer price;
-
     private String tagsWithJsonString;
     private String zonesWithJsonString;
 

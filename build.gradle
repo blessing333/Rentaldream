@@ -31,6 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'commons-io:commons-io:2.6'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.google.code.gson:gson:2.8.6'
     compile 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'

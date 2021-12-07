@@ -2,7 +2,7 @@ package com.blessing.rentaldream.modules.post;
 
 import com.blessing.rentaldream.modules.account.domain.Account;
 import com.blessing.rentaldream.modules.account.repository.AccountRepository;
-import com.blessing.rentaldream.modules.util.FileUploader;
+import com.blessing.rentaldream.infra.file.FileManager;
 import com.blessing.rentaldream.modules.notification.NotificationService;
 import com.blessing.rentaldream.modules.notification.NotificationType;
 import com.blessing.rentaldream.modules.post.domain.Post;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,9 +45,8 @@ public class PostService {
     private final AccountRepository accountRepository;
     private final NotificationService notificationService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final FileUploader fileUploader;
+    private final FileManager fileManager;
     private final ThumbnailRepository thumbnailRepository;
-    private static final int ITEM_COUNT_PER_PAGE = 20;
 
     public Long addNewPost(Account account, PostForm postForm) {
         Post newPost = Post.createNewPost(postForm,account);
@@ -100,7 +100,7 @@ public class PostService {
         if(!postForm.getThumbnail().isEmpty()) {
             try {
                 Thumbnail thumbnail = thumbnailRepository.findByPost(post);
-                fileUploader.deleteFile(thumbnail.getSavedFileName());
+                fileManager.deleteFile(thumbnail.getSavedFileName());
                 thumbnailRepository.delete(thumbnail);
                 SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
                 String originalFileName = postForm.getThumbnail().getOriginalFilename();
@@ -117,11 +117,13 @@ public class PostService {
         return post.getId();
     }
 
-    public void deletePost(Long id, Account account) {
+    public void deletePost(Long id, Account account) throws IOException {
         Post post = loadPostInformation(id);
         if(!post.isPoster(account)) {
             throw new AccessDeniedException("해당 게시글의 작성자가 아닙니다;");
         }
+        thumbnailRepository.deleteByPost(post);
+        fileManager.deleteFile(post.getThumbnail());
         postRepository.delete(post);
     }
 
@@ -179,6 +181,6 @@ public class PostService {
     }
 
     private String saveThumbnailFileToOuterStorage(MultipartFile thumbnailFile,String fileName) throws Exception{
-        return fileUploader.uploadFile(thumbnailFile,fileName);
+        return fileManager.uploadFile(thumbnailFile,fileName);
     }
 }

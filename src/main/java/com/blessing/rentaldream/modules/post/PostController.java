@@ -40,7 +40,6 @@ public class PostController {
     private final ZoneService zoneService;
     private final PostService postService;
     private final PostFormValidator postFormValidator;
-    private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
     private final PostRepository postRepository;
 
@@ -119,7 +118,7 @@ public class PostController {
     }
 
     @DeleteMapping(POST_URL+"/{id}")
-    public String deletePost(@CurrentUser Account account, RedirectAttributes redirectAttributes, @PathVariable Long id){
+    public String deletePost(@CurrentUser Account account, @PathVariable Long id) throws Exception{
         postService.deletePost(id,account);
         return REDIRECT_URL + HOME_URL;
     }

@@ -1,4 +1,4 @@
-package com.blessing.rentaldream.modules.util;
+package com.blessing.rentaldream.infra.file;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -9,15 +9,19 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 
-@Service
+@Component
+@Profile("prod")
 @NoArgsConstructor
-public class S3FileManager implements FileUploader {
+public class S3FileManager implements FileManager {
     private AmazonS3 s3Client;
 
     @Value("${cloud.aws.credentials.accessKey}")
