@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import javax.sql.DataSource;
 
+import static com.blessing.rentaldream.infra.config.UrlConfig.*;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,11 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(
-                        UrlConfig.HOME_URL,
-                        UrlConfig.SIGN_UP_URL,
-                        UrlConfig.LOGIN_URL,
-                        UrlConfig.POST_URL+"/{id}",
-                        UrlConfig.POST_LIST_URL
+                        HOME_URL,
+                        SIGN_UP_URL,
+                        LOGIN_URL,
+                        POST_URL+"/{id}",
+                        POST_LIST_URL,
+                        SEARCH_URL
 
                 )
                 .permitAll()

@@ -183,4 +183,5 @@ public class PostService {
     private String saveThumbnailFileToOuterStorage(MultipartFile thumbnailFile,String fileName) throws Exception{
         return fileManager.uploadFile(thumbnailFile,fileName);
     }
+
 }

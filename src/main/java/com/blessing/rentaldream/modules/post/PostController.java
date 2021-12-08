@@ -80,7 +80,7 @@ public class PostController {
             accountRepository.findById(account.getId()).ifPresent(model::addAttribute);
             commentForm.setWriter(account.getId());
         }
-
+        model.addAttribute("recommendPostList");
         model.addAttribute(commentForm);
         return POST_VIEW;
     }

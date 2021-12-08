@@ -31,6 +31,8 @@ public class UrlConfig {
     public static final String NOTIFICATION_LIST_URL = "/notifications";
     public static final String NOTIFICATION_ALL_URL = NOTIFICATION_LIST_URL + "/all";
 
+    //검색
+    public static final String SEARCH_URL = "/search";
 
 
 }
