@@ -20,7 +20,7 @@ public class UrlConfig {
     public static final String POST_LIST_URL = "/posts";
 
     //관심상품 관련
-    public static final String FAVORITE_URL = "/account/favorite";
+    public static final String FAVORITE_URL = "/account/wishlist";
 
     //댓글
     public static final String COMMENT_URL = "/comment";

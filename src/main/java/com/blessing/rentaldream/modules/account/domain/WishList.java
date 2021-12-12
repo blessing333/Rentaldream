@@ -1,6 +1,5 @@
-package com.blessing.rentaldream.modules.favorite;
+package com.blessing.rentaldream.modules.account.domain;
 
-import com.blessing.rentaldream.modules.account.domain.Account;
 import com.blessing.rentaldream.modules.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"account","post"})
-public class Favorite {
+public class WishList {
     @Id @GeneratedValue
     @Column(name = "FAVORIT_ID")
     private Long id;
@@ -25,8 +24,8 @@ public class Favorite {
     @ManyToOne
     @JoinColumn(name = "POST_ID")
     private Post post;
-    public static Favorite createNewFavorite(Account account,Post post){
-        Favorite instance = new Favorite();
+    public static WishList createNewFavorite(Account account, Post post){
+        WishList instance = new WishList();
         instance.account = account;
         instance.post = post;
         return instance;

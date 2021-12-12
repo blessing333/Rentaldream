@@ -1,7 +1,6 @@
 package com.blessing.rentaldream.modules.account.domain;
 
 import com.blessing.rentaldream.modules.account.form.ProfileForm;
-import com.blessing.rentaldream.modules.favorite.Favorite;
 import com.blessing.rentaldream.modules.post.domain.Post;
 import com.blessing.rentaldream.modules.tag.Tag;
 import com.blessing.rentaldream.modules.zone.Zone;
@@ -37,8 +36,8 @@ public class Account {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AccountZone> AccountZones= new HashSet<>();
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Favorite> favorites= new HashSet<>();
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<WishList> wishLists = new HashSet<>();
 
     private String password;
 
@@ -110,19 +109,19 @@ public class Account {
         setLocation(profileForm.getLocation());
         setReceivePostCreatedNotificationByEmail(profileForm.isReceivePostCreatedNotificationByEmail());
     }
-    public void addFavorite(Favorite favorite){
-        this.getFavorites().add(favorite);
+    public void addFavorite(WishList wishList){
+        this.getWishLists().add(wishList);
     }
 
-    public void deleteFavorite(Favorite favorite){
-        this.getFavorites().remove(favorite);
+    public void deleteFavorite(WishList wishList){
+        this.getWishLists().remove(wishList);
     }
 
     public boolean checkFavorite(Post post){
-        Set<Favorite> favoriteSet = this.getFavorites();
+        Set<WishList> wishListSet = this.getWishLists();
         boolean result = false;
-        for(Favorite favorite : favoriteSet){
-            if(Objects.equals(favorite.getPost().getId(), post.getId())) {
+        for(WishList wishList : wishListSet){
+            if(Objects.equals(wishList.getPost().getId(), post.getId())) {
                 return true;
             }
         }

@@ -37,13 +37,13 @@ public class PostEventListener {
         List<Account> accounts = accountRepository.findAccountWithTagAndZone(tagList,zoneList);
         accounts.forEach(account -> {
             if (account.isReceivePostCreatedNotificationByEmail()) {
-                sendStudyCreatedEmail(post, account, "관심 상품이 등록되었어요!",
+                sendPostCreatedEmail(post, account, "관심 상품이 등록되었어요!",
                         "빌려드림, '" + post.getTitle() + "' 관심 상품이 등록되었습니다!.");
             }
         });
     }
 
-    private void sendStudyCreatedEmail(Post post, Account account, String contextMessage, String emailSubject) {
+    private void sendPostCreatedEmail(Post post, Account account, String contextMessage, String emailSubject) {
         Context context = new Context();
         context.setVariable("nickname", account.getNickname());
         context.setVariable("link", "/post/" + post.getId());
