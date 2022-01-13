@@ -54,7 +54,7 @@ public class PostController {
         model.addAttribute(postForm);
         String tagListJson = tagService.findAllTagAsJsonString();
         model.addAttribute("recommendTagList",tagListJson);
-        String cityListJson = zoneService.findAllZonesAsJsonString();
+        String cityListJson = zoneService.findAllZonesAsJsonString(); 
         model.addAttribute("cityList",cityListJson);
         return POST_NEW_POST_VIEW;
     }
