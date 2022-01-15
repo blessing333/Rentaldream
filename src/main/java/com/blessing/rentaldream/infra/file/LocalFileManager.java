@@ -15,13 +15,15 @@ public class LocalFileManager implements FileManager {
     private final static String FILE_ACCESS_PATH = "/assets/thumbnails/";
     @Override
     public String uploadFile(MultipartFile file, String fileName) throws IOException {
-        File savedFile = new File(FILE_UPLOAD_PATH,fileName);
-        try {
-            log.info("content-type  " + file.getContentType());
-            FileUtils.copyInputStreamToFile(file.getInputStream(), savedFile);
-        } catch (IOException e) {
-            log.error("Error while create local file.", e);
-            throw e;
+        if(!existByFileName(fileName)) {
+            File savedFile = new File(FILE_UPLOAD_PATH, fileName);
+            try {
+                log.info("content-type  " + file.getContentType());
+                FileUtils.copyInputStreamToFile(file.getInputStream(), savedFile);
+            } catch (IOException e) {
+                log.error("Error while create local file.", e);
+                throw e;
+            }
         }
         return FILE_ACCESS_PATH + fileName;
     }

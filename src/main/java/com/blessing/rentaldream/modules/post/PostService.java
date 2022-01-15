@@ -70,6 +70,17 @@ public class PostService {
         return newPost.getId();
     }
 
+    public Long addTestPost(Account account, PostForm postForm,String thumbnailPath,String fileName) {
+        Post newPost = Post.createNewPost(postForm,account);
+        addPostTagToPost(postForm,newPost);
+        addPostZoneToPost(postForm,newPost);
+        newPost.modifyThumbnailPath(thumbnailPath);
+        Thumbnail postThumbnail = Thumbnail.createNewThumbnail(fileName,fileName,thumbnailPath,newPost);
+        thumbnailRepository.save(postThumbnail);
+        postRepository.save(newPost);
+        return newPost.getId();
+    }
+
     public Post loadPostInformationWithIncreaseViewCount(Long id) {
         Post foundPost = loadPostInformation(id);
         foundPost.increaseViewCount();

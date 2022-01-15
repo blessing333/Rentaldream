@@ -1,5 +1,6 @@
 package com.blessing.rentaldream.modules.account.service;
 
+import com.blessing.rentaldream.infra.file.FileManager;
 import com.blessing.rentaldream.modules.account.UserAccount;
 import com.blessing.rentaldream.modules.account.domain.Account;
 import com.blessing.rentaldream.modules.account.domain.AccountTag;
@@ -67,27 +68,40 @@ public class AccountService implements UserDetailsService {
        }
 
         if(postRepository.count() == 0){
-            PostForm postForm = new PostForm();
-            postForm.setTitle("test1");
-            postForm.setDescription("discr");
-            postForm.setPrice(1000);
-            //postForm.(TestImageSource.imageSource);
-            postForm.setTagsWithJsonString("[{\"tagName\":\"모티\"},{\"tagName\":\"모티모티\"},{\"tagName\":\"기모티\"}]");
-            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
             Account account = accountRepository.findByEmail("blessing_333@naver.com");
-            postService.addNewPost(account,postForm);
-            postForm.setTitle("test2");
-            postForm.setDescription("discr2");
-            postForm.setPrice(2000);
-            postForm.setTagsWithJsonString("[{\"tagName\":\"모티모티\"},{\"tagName\":\"기모티\"}]");
-            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
-            postService.addNewPost(account,postForm);
-            postForm.setTitle("test3");
-            postForm.setDescription("discr3");
-            postForm.setPrice(3000);
-            postForm.setTagsWithJsonString("[{\"tagName\":\"기모티\"}]");
-            postForm.setZonesWithJsonString("[{\"zoneName\":\"Hwaseong(화성시)/Gyeonggi\"}]");
-            postService.addNewPost(account,postForm);
+            String filePath = "/assets/thumbnails/";
+            for (int i = 0; i < 5000; i++) {
+                String fileName = "notebook.jpg";
+                PostForm postForm = new PostForm();
+                postForm.setTitle("노트북 " +i);
+                postForm.setDescription("discr");
+                postForm.setPrice(1000);
+                postForm.setTagsWithJsonString("[{\"tagName\":\"노트북\"}]");
+                postForm.setZonesWithJsonString("[{\"zoneName\":\"Seongnam(성남시)/Gyeonggi\"}]");
+                postService.addTestPost(account,postForm,filePath+fileName,fileName);
+            }
+
+            for (int i = 0; i < 3000; i++) {
+                String fileName = "cloth.jpg";
+                PostForm postForm = new PostForm();
+                postForm.setTitle("옷 " +i);
+                postForm.setDescription("discr");
+                postForm.setPrice(1000);
+                postForm.setTagsWithJsonString("[{\"tagName\":\"옷\"}]");
+                postForm.setZonesWithJsonString("[{\"zoneName\":\"Seongnam(성남시)/Gyeonggi\"}]");
+                postService.addTestPost(account,postForm,filePath+fileName,fileName);
+            }
+
+            for (int i = 0; i < 2000; i++) {
+                String fileName = "macbook.jpg";
+                PostForm postForm = new PostForm();
+                postForm.setTitle("맥북 " +i);
+                postForm.setDescription("discr");
+                postForm.setPrice(1000);
+                postForm.setTagsWithJsonString("[{\"tagName\":\"노트북\"},{\"tagName\":\"맥북\"}]");
+                postForm.setZonesWithJsonString("[{\"zoneName\":\"Seongnam(성남시)/Gyeonggi\"}]");
+                postService.addTestPost(account,postForm,filePath+fileName,fileName);
+            }
         }
     }
 
