@@ -29,13 +29,14 @@ public class PostFormValidator implements Validator {
             errors.rejectValue("tagsWithJsonString", ErrorCodeConfig.MAX_OUT_TAG_COUNT);
         }
         MultipartFile thumbnailFile = postForm.getThumbnail();
-        if(postForm.getThumbnailPath() == null && thumbnailFile.isEmpty()){
-            log.error("썸네일 없음 ---- " + thumbnailFile.getSize());
+
+        if(postForm.getThumbnailPath() == null && (thumbnailFile == null || thumbnailFile.isEmpty())){
+            log.error("썸네일 없음 ---- ");
             errors.rejectValue("thumbnail", ErrorCodeConfig.NO_THUMBNAIL);
         }
 
-        if(!thumbnailFile.isEmpty()  && !thumbnailFile.getContentType().startsWith("image")){
-            log.error("파일 형식 불일치 ---- " +thumbnailFile.getContentType());
+        if(thumbnailFile == null || !thumbnailFile.isEmpty()  && !thumbnailFile.getContentType().startsWith("image")){
+            log.error("파일 형식 불일치 ---- ");
             errors.rejectValue("thumbnail","not_image","썸네일은 이미지 파일이어야합니다.");
         }
 

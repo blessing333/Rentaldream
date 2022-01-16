@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Profile({"dev","prod"})
+//@Profile({"dev","prod"})
+@Profile({"real"})
 @Component
 @RequiredArgsConstructor
 @Slf4j
