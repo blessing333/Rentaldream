@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,11 +125,17 @@ public class PostController {
     }
 
     @GetMapping(POST_LIST_URL)
-    public String createAllPostsView(Model model,
+    public String createAllPostsView(Integer part,Model model,
                                      @PageableDefault(size = 9, sort = "createdDate", direction = Sort.Direction.DESC)
             Pageable pageable){
         //현재 페이지 번호,
         Page<Post>  postPage = postRepository.findAll(pageable);
+        int totalPage = postPage.getTotalPages();
+        int pageCount = Math.min(totalPage, 10);
+        System.out.println("pageCount ---------" + pageCount);
+        System.out.println("part ---------" + part);
+        model.addAttribute("pageCount",pageCount);
+        model.addAttribute("part",part);
         model.addAttribute("postPage",postPage);
         return POST_LIST_VIEW;
     }

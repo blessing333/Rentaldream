@@ -55,7 +55,6 @@ public class MainController {
     public String searchView(String keyword, Integer part,@PageableDefault(size = 10,
             sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable, Model model){
         Page<Post> postPage = postRepository.findByKeyword(keyword, pageable);
-        List<Post> posts = postPage.getContent();
         int totalPage = postPage.getTotalPages();
         int pageCount = Math.min(totalPage, 10);
         model.addAttribute("pageCount",pageCount);
