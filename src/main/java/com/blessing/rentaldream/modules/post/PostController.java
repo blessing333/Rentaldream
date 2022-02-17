@@ -8,16 +8,16 @@ import com.blessing.rentaldream.modules.post.domain.Post;
 import com.blessing.rentaldream.modules.post.form.PostForm;
 import com.blessing.rentaldream.modules.post.repository.PostRepository;
 import com.blessing.rentaldream.modules.post.validator.PostFormValidator;
+import com.blessing.rentaldream.modules.tag.Tag;
 import com.blessing.rentaldream.modules.tag.TagService;
+import com.blessing.rentaldream.modules.zone.Zone;
 import com.blessing.rentaldream.modules.zone.ZoneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 import static com.blessing.rentaldream.infra.config.UrlConfig.*;
 import static com.blessing.rentaldream.infra.config.ViewNameConfig.*;
@@ -110,7 +109,6 @@ public class PostController {
     @PostMapping(POST_EDIT_URL+"/{id}")
     public String modifyPost(@CurrentUser Account account, @Valid @ModelAttribute PostForm postForm, Errors errors, Model model, RedirectAttributes redirectAttributes,@PathVariable Long id){
         if(errors.hasErrors()){
-            log.error(Objects.requireNonNull(errors.getFieldError()).toString());
             return POST_EDIT_VIEW;
         }
         Long postId = postService.modifyPost(postForm,id);
@@ -126,17 +124,44 @@ public class PostController {
 
     @GetMapping(POST_LIST_URL)
     public String createAllPostsView(Integer part,Model model,
-                                     @PageableDefault(size = 9, sort = "createdDate", direction = Sort.Direction.DESC)
-            Pageable pageable){
+                                     @PageableDefault(size = 9, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable){
         //현재 페이지 번호,
         Page<Post>  postPage = postRepository.findAll(pageable);
         int totalPage = postPage.getTotalPages();
         int pageCount = Math.min(totalPage, 10);
-        System.out.println("pageCount ---------" + pageCount);
-        System.out.println("part ---------" + part);
         model.addAttribute("pageCount",pageCount);
         model.addAttribute("part",part);
         model.addAttribute("postPage",postPage);
         return POST_LIST_VIEW;
+    }
+
+    @GetMapping(POST_LIST_BY_REGION_URL)
+    public String createPostsListByRegionView(@CurrentUser Account account,Integer part,Model model,
+                                     @PageableDefault(size = 9, sort = "viewCount", direction = Sort.Direction.DESC) Pageable pageable){
+        account = accountRepository.findByNickname(account.getNickname());
+        List<Zone> zoneList = account.convertAccountZonesAsZoneList();
+        Page<Post>  postPage = postRepository.findPostsByZoneListWithPaging(zoneList,pageable);
+        int totalPage = postPage.getTotalPages();
+        int pageCount = Math.min(totalPage, 10);
+        model.addAttribute("pageCount",pageCount);
+        model.addAttribute("part",part);
+        model.addAttribute("postPage",postPage);
+        return POST_LIST_REGION_VIEW;
+    }
+
+    @GetMapping(RECOMMEND_POST_LIST_URL)
+    public String createRecommendPostsListView(@CurrentUser Account account,Integer part,Model model,
+                                              @PageableDefault(size = 9, sort = "viewCount", direction = Sort.Direction.DESC)
+                                                      Pageable pageable){
+        account = accountRepository.findByNickname(account.getNickname());
+        List<Zone> zoneList = account.convertAccountZonesAsZoneList();
+        List<Tag> tagList = account.convertAccountTagsAsTagList();
+        Page<Post>  postPage = postRepository.findPostsByZoneListAndTagListWithPaging(tagList,zoneList,pageable);
+        int totalPage = postPage.getTotalPages();
+        int pageCount = Math.min(totalPage, 10);
+        model.addAttribute("pageCount",pageCount);
+        model.addAttribute("part",part);
+        model.addAttribute("postPage",postPage);
+        return RECOMMEND_POST_LIST_VIEW;
     }
 }

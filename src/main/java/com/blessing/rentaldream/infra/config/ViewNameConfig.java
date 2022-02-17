@@ -14,6 +14,8 @@ public class ViewNameConfig {
     public static final String POST_EDIT_VIEW = "post/post-edit-form";
     public static final String POST_VIEW = "post/post";
     public static final String POST_LIST_VIEW = "post/post-list";
+    public static final String POST_LIST_REGION_VIEW = "post/post-list-region";
+    public static final String RECOMMEND_POST_LIST_VIEW = "post/recommend-post-list";
 
     //알림 뷰
     public static final String NOTIFICATION_NEW_VIEW = "notification/new-notifications";

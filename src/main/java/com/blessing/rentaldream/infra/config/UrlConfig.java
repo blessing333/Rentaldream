@@ -18,6 +18,8 @@ public class UrlConfig {
     public final static String POST_NEW_POST_URL = "/new-post";
     public final static String POST_EDIT_URL = "/edit-post";
     public static final String POST_LIST_URL = "/posts";
+    public final static String POST_LIST_BY_REGION_URL = POST_LIST_URL + "/region";
+    public final static String RECOMMEND_POST_LIST_URL = POST_LIST_URL + "/recommend";
 
     //관심상품 관련
     public static final String FAVORITE_URL = "/account/wishlist";

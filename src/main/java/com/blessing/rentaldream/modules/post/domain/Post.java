@@ -74,6 +74,7 @@ public class Post {
     public void addZone(PostZone postZone) {
         this.getZones().add(postZone);
     }
+
     public boolean isPoster(UserAccount userAccount){
         Account account = userAccount.getAccount();
         return createdBy.equals(account);

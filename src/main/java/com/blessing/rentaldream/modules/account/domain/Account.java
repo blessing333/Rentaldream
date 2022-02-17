@@ -41,13 +41,7 @@ public class Account {
 
     private String password;
 
-    private boolean emailVerified;
-
-    private String emailCheckToken;
-
     private LocalDateTime joinedAt;
-
-    private LocalDateTime tokenGeneratedAt;
 
     private String bio;
 
@@ -70,20 +64,7 @@ public class Account {
         instance.setEmail(email);
         instance.setPassword(password);
         instance.setJoinedAt(LocalDateTime.now());
-        instance.generateEmailCheckToken();
         return instance;
-    }
-
-    public void generateEmailCheckToken() {
-        this.emailCheckToken= UUID.randomUUID().toString();
-        this.tokenGeneratedAt = LocalDateTime.now();
-    }
-    public boolean isValidToken(String token) {
-        return this.getEmailCheckToken().equals(token);
-    }
-
-    public boolean canResendEmail(){
-        return tokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
     }
 
     public void addNewAccountTag(AccountTag accountTag) {

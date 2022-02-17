@@ -4,6 +4,7 @@ import com.blessing.rentaldream.modules.post.domain.Post;
 import com.blessing.rentaldream.modules.post.repository.querydsl.PostRepositoryExtension;
 import com.blessing.rentaldream.modules.tag.Tag;
 import com.blessing.rentaldream.modules.zone.Zone;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
